@@ -1,10 +1,11 @@
 import React from "react";
-import "./App.css";
+
+import "./app.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
+      <header className="app-header">
         <h1>Fancy Weather</h1>
       </header>
     </div>

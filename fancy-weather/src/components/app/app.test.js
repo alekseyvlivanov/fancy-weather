@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import App from "./App";
+
+import App from "./app";
 
 test("renders Fancy Weather heading", () => {
   const { getByText } = render(<App />);
