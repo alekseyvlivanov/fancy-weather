@@ -1,0 +1,103 @@
+.control-block {
+  display: flex;
+}
+
+.control-refresh {
+  height: 44px;
+  width: 44px;
+  background: rgba(180, 184, 187, 0.4);
+  background-image: url(../../assets/bg-refresh.svg);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Montserrat', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-refresh:hover {
+  background: rgba(180, 184, 187, 0.8);
+  background-image: url(../../assets/bg-refresh.svg);
+}
+
+.control-lang {
+  height: 44px;
+  width: 71px;
+  margin-right: 10px;
+}
+
+.control-lang select {
+  height: 100%;
+  width: 100%;
+  appearance: none;
+  background: rgba(174, 181, 185, 0.5);
+  background-image: url(../../assets/stroke.svg);
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Montserrat', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding-left: 1.6rem;
+  text-transform: uppercase;
+}
+
+.control-lang select::-ms-expand {
+  display: none;
+}
+
+.control-lang select option {
+  background: rgba(174, 181, 185, 1);
+  font-family: 'Montserrat', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.control-degrees {
+  height: 44px;
+  width: 88px;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.control-degrees label {
+  height: 100%;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(76, 82, 85, 0.4);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  font-family: 'Montserrat', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.control-degrees label.fahrenheit {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.control-degrees label.celsius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.control-degrees input[type='radio'] {
+  display: none;
+}
+
+.control-degrees input[type='radio']:checked + label {
+  background: rgba(174, 181, 185, 0.5);
+  color: #ffffff;
+}
