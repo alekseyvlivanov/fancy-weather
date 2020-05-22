@@ -1,0 +1,92 @@
+.weather-block {
+  display: flex;
+  flex-direction: column;
+  max-width: 60rem;
+}
+
+.weather-title h1 {
+  font-size: 4.4rem;
+  font-weight: bold;
+  line-height: 5.4rem;
+  text-transform: uppercase;
+}
+
+.weather-title h3 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 2.9rem;
+}
+
+.weather-today {
+  display: flex;
+  text-transform: uppercase;
+}
+
+.today-left {
+  display: flex;
+}
+
+.left-temp {
+  font-size: 30.6rem;
+  font-weight: bold;
+  line-height: 30.6rem;
+}
+
+.left-degrees {
+  font-size: 10rem;
+  font-weight: bold;
+  line-height: 0;
+  margin-top: 4rem;
+  margin-right: 1rem;
+}
+
+.today-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.today-icon {
+  height: 100px;
+  width: 160px;
+}
+
+.today-summary {
+  font-size: 2.2rem;
+  font-weight: bold;
+  line-height: 3.7rem;
+}
+
+.weather-days {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.weather-day {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-day h5 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  line-height: 2.7rem;
+}
+
+.day-summary {
+  display: flex;
+}
+
+.day-summary span {
+  font-size: 8rem;
+  font-weight: 600;
+  line-height: 9.8rem;
+}
+
+.day-icon {
+  height: 44px;
+  width: 66px;
+  margin-top: 1rem;
+}

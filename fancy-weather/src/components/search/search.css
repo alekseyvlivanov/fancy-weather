@@ -43,9 +43,22 @@
   font-size: 1.4rem;
   font-weight: bold;
   line-height: 1;
+  outline: none;
   text-transform: uppercase;
 }
 
 .search-submit:hover {
   background: rgba(174, 181, 185, 0.8);
+}
+
+@media (max-width: 767px) {
+  .search-city {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 424px) {
+  .search-city {
+    margin-top: 10px;
+  }
 }

@@ -17,11 +17,21 @@
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.app-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 40px;
+@media (max-width: 767px) {
+  .app-header {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .app-main {
+    flex-direction: column;
+  }
+
+  .app-footer {
+    display: none;
+  }
 }
