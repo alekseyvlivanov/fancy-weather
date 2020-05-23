@@ -1,7 +1,7 @@
 .weather-block {
   display: flex;
   flex-direction: column;
-  max-width: 60rem;
+  width: 600px;
 }
 
 .weather-title h1 {
@@ -24,6 +24,7 @@
 
 .today-left {
   display: flex;
+  margin-right: 10px;
 }
 
 .left-temp {
@@ -43,7 +44,7 @@
 .today-right {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .today-icon {
@@ -67,6 +68,7 @@
 .weather-day {
   display: flex;
   flex-direction: column;
+  width: 375px;
 }
 
 .weather-day h5 {
