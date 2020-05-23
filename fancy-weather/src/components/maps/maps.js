@@ -8,7 +8,7 @@ function Maps() {
   return (
     <div className="maps-block">
       <div className="maps-google">
-        <img src={vladivostok} alt="Vladivostok"></img>
+        <img className="maps-image" src={vladivostok} alt="Vladivostok"></img>
       </div>
       <div className="maps-coordinates">
         <p>Latitude: 43°13'</p>
