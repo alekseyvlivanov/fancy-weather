@@ -1,7 +1,7 @@
 .control-block {
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: flex-start; */
   width: 600px;
 }
 
@@ -110,4 +110,10 @@
   border: none;
   color: #ffffff;
   cursor: unset;
+}
+
+@media (max-width: 767px) {
+  .control-block {
+    justify-content: center;
+  }
 }
