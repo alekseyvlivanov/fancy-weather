@@ -4,17 +4,29 @@
   width: 600px;
 }
 
-.weather-title h1 {
+.city-country {
   font-size: 4.4rem;
   font-weight: bold;
   line-height: 5.4rem;
   text-transform: uppercase;
 }
 
-.weather-title h3 {
+.date-time {
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 4rem;
+}
+
+.city {
+  margin-right: 1rem;
+}
+
+.city::after {
+  content: ',';
+}
+
+.date {
+  margin-right: 1rem;
 }
 
 .weather-today {
@@ -39,8 +51,6 @@
   font-size: 10rem;
   font-weight: bold;
   line-height: 1;
-  /* margin-top: 4rem; */
-  /* margin-right: 1rem; */
 }
 
 .today-right {
@@ -106,10 +116,21 @@
     text-align: center;
   }
 
-  .weather-title h1 {
-    font-size: 3.6rem;
-    line-height: 4rem;
+  .city-country {
+    display: flex;
+    flex-direction: column;
+    font-size: 3.2rem;
+    line-height: 3.6rem;
   }
+
+  .city {
+    margin-right: 0;
+  }
+
+  .city::after {
+    content: none;
+  }
+
   .weather-today {
     flex-direction: column;
     align-items: center;
@@ -121,8 +142,8 @@
   }
 
   .left-temp {
-    font-size: 24rem;
-    line-height: 24rem;
+    font-size: 20rem;
+    line-height: 20rem;
   }
 
   .today-icon {
@@ -130,6 +151,7 @@
   }
 
   .today-summary {
+    font-size: 2rem;
     margin-top: 2rem;
   }
 
@@ -140,5 +162,9 @@
 
   .weather-day {
     width: unset;
+  }
+
+  .weather-day h5 {
+    font-size: 2rem;
   }
 }

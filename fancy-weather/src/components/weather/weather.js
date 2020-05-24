@@ -8,8 +8,14 @@ function Weather() {
   return (
     <div className="weather-block">
       <div className="weather-title">
-        <h1>Vladivostok, Russia</h1>
-        <h3>Fri 22 May 15:21:34</h3>
+        <h1 className="city-country">
+          <span className="city">Vladivostok</span>
+          <span className="country">Russia</span>
+        </h1>
+        <h3 className="date-time">
+          <span className="date">Fri 22 May</span>
+          <span className="time">15:21:34</span>
+        </h3>
       </div>
       <div className="weather-today">
         <div className="today-left">
