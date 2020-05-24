@@ -1,17 +1,19 @@
 .app {
   display: flex;
   flex-direction: column;
+  max-width: 1440px;
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  margin: 0 auto;
 }
 
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin-top: 40px;
-  margin-right: 40px;
-  margin-left: 40px;
+  margin-top: 4rem;
+  margin-right: 4rem;
+  margin-left: 4rem;
 }
 
 .app-main {
@@ -19,20 +21,47 @@
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
-  margin: 10px 40px;
+  margin-right: 4rem;
+  margin-left: 4rem;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1440px) {
   .app-header {
-    flex-direction: column;
-    margin-top: 20px;
+    margin-right: 2rem;
+    margin-left: 2rem;
   }
 
   .app-main {
+    margin-right: 2rem;
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-main {
     flex-direction: column;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    margin-bottom: 2rem;
   }
 
   .app-footer {
     display: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .app-header {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .app-main {
+    margin-right: auto;
+    margin-left: auto;
   }
 }
