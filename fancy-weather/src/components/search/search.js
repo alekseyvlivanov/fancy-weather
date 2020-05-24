@@ -11,8 +11,6 @@ function Search() {
         className="search-input"
         type="text"
         placeholder="Search city or ZIP"
-        autoFocus
-        required
       />
       <img
         className="search-voice"
