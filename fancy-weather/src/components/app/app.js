@@ -10,19 +10,21 @@ import './app.css';
 
 function App() {
   return (
-    <div className="app">
-      <div className="app-header">
-        <Control />
-        <Search />
-      </div>
-      <div className="app-main">
-        <Weather />
-        <Maps />
+    <React.Fragment>
+      <div className="app">
+        <div className="app-header">
+          <Control />
+          <Search />
+        </div>
+        <div className="app-main">
+          <Weather />
+          <Maps />
+        </div>
       </div>
       <div className="app-footer">
         <Marquee />
       </div>
-    </div>
+    </React.Fragment>
   );
 }
 
