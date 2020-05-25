@@ -1,3 +1,3 @@
-import { toCelsius, toFahrenheit } from './info-panel';
+import Utils from './utils';
 
-export default { toCelsius, toFahrenheit };
+export default Utils;

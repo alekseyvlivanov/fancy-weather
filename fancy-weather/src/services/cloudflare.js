@@ -1,0 +1,13 @@
+export default class CloudflareService {
+  constructor(data) {
+    this.apiBase = data.apiBase;
+    this.regexIP = /^ip=([0-9]+(.[0-9]+){3})$/m;
+  }
+
+  async getIP() {
+    const res = await fetch(this.apiBase);
+    const text = await res.text();
+
+    return text.match(this.regexIP)[1];
+  }
+}

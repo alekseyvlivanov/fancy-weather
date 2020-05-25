@@ -4,21 +4,44 @@ import refresh from '../../assets/refresh.svg';
 
 import './control.css';
 
-function Control() {
+function Control(props) {
   return (
     <div className="control-block">
-      <button className="control-refresh" title="Refresh background">
-        <img src={refresh} alt="Refresh background" />
+      <button
+        className="control-refresh"
+        title="Refresh background"
+        onClick={() => props.cbLoading(!props.loading)}
+      >
+        <img
+          src={refresh}
+          alt="Refresh background"
+          style={{
+            animation: props.loading ? 'refresh 1.5s linear infinite' : '',
+          }}
+        />
       </button>
+
       <div className="control-lang">
-        <select name="lang">
+        <select
+          name="lang"
+          value={props.lang}
+          onChange={(e) => props.cbLang(e.target.value)}
+        >
           <option value="en">EN</option>
           <option value="ru">RU</option>
           <option value="be">BE</option>
         </select>
       </div>
+
       <div className="control-degrees">
-        <input type="radio" name="degrees" id="fahrenheit" value="fahrenheit" />
+        <input
+          type="radio"
+          name="degrees"
+          id="fahrenheit"
+          value="fahrenheit"
+          checked={props.degrees === 'fahrenheit'}
+          onChange={(e) => props.cbDegrees(e.target.value)}
+        />
         <label className="fahrenheit" htmlFor="fahrenheit">
           °F
         </label>
@@ -27,7 +50,8 @@ function Control() {
           name="degrees"
           id="celcius"
           value="celcius"
-          defaultChecked
+          checked={props.degrees === 'celcius'}
+          onChange={(e) => props.cbDegrees(e.target.value)}
         />
         <label className="celsius" htmlFor="celcius">
           °C

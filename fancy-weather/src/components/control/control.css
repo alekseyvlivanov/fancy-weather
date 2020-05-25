@@ -1,3 +1,12 @@
+@keyframes refresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .control-block {
   display: flex;
   align-items: center;
@@ -117,7 +126,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .control-block {
     justify-content: center;
   }

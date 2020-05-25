@@ -56,16 +56,9 @@
   background: rgba(174, 181, 185, 0.8);
 }
 
-@media (max-width: 767px) {
-  .search-city {
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 424px) {
+@media (max-width: 1024px) {
   .search-city {
     width: unset;
-    margin-top: 1rem;
   }
 
   .search-input {
@@ -80,5 +73,11 @@
 
   .search-submit {
     width: 90px;
+  }
+}
+
+@media (max-width: 425px) {
+  .search-city {
+    margin-top: 1rem;
   }
 }
