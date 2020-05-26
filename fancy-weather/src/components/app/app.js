@@ -25,10 +25,12 @@ function App() {
   }
 
   function cbLang(value) {
+    localStorage.setItem('lang', value);
     setLang(value);
   }
 
   function cbDegrees(value) {
+    localStorage.setItem('degrees', value);
     setDegrees(value);
   }
 
