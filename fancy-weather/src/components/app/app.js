@@ -13,12 +13,26 @@ import './app.css';
 import APIDATA from '../../services/api-data';
 import CloudflareService from '../../services/cloudflare';
 import GeoIPLookupService from '../../services/geoiplookup';
+import HereService from '../../services/here';
 import WeatherbitService from '../../services/weatherbit';
+import YandexService from '../../services/yandex';
 
 function App() {
+  const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
+  const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
+  const hereService = new HereService(APIDATA.Here);
+  const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
+  const yandexService = new YandexService(APIDATA.Yandex);
+
+  // Main data object
+  const obj = { place: Utils.initValues.place };
+
   const [loading, setLoading] = React.useState(true);
   const [lang, setLang] = React.useState(Utils.initValues.lang);
   const [degrees, setDegrees] = React.useState(Utils.initValues.degrees);
+  const [place, setPlace] = React.useState(obj.place[lang]);
+  const [coords, setCoords] = React.useState(Utils.initValues.coords);
+  const [txt, setTxt] = React.useState(Utils.initValues.txt[lang]);
 
   function cbLoading(value) {
     setLoading(value);
@@ -27,6 +41,8 @@ function App() {
   function cbLang(value) {
     localStorage.setItem('lang', value);
     setLang(value);
+    setPlace(obj.place[value]);
+    setTxt(Utils.initValues.txt[value]);
   }
 
   function cbDegrees(value) {
@@ -34,55 +50,61 @@ function App() {
     setDegrees(value);
   }
 
-  React.useEffect(() => {
-    Utils.consoleInfo();
-  }, []);
+  function cbPlace(value) {
+    setPlace(value);
+  }
+
+  function cbCoords(value) {
+    setCoords(value);
+  }
 
   React.useEffect(() => {
     async function fetchData() {
-      setLoading(true);
+      // const ip = await cloudflareService.getIP();
 
-      const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
-      const ip = await cloudflareService.getIP();
+      // window.console.log(ip);
 
-      window.console.log(ip);
+      // const geoByIP = await geoIPLookupService.getGeoByIP(ip);
 
-      const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
-      const geo = await geoIPLookupService.getGeo(ip);
+      // window.console.log(`${geoByIP.city}, ${geoByIP.country_name}`);
+      // window.console.log(`latitude: ${geoByIP.latitude}`);
+      // window.console.log(`longitude: ${geoByIP.longitude}`);
+      // window.console.log(`timezone_name: ${geoByIP.timezone_name}`);
 
-      window.console.log(`${geo.city}, ${geo.country_name}`);
-      window.console.log(`latitude: ${geo.latitude}`);
-      window.console.log(`longitude: ${geo.longitude}`);
-      window.console.log(`timezone_name: ${geo.timezone_name}`);
+      // const current = await weatherbitService.getCurrent(
+      //   geoByIP.latitude,
+      //   geoByIP.longitude,
+      //   lang,
+      //   degrees,
+      // );
+      // const forecast = await weatherbitService.getForecast(
+      //   geoByIP.latitude,
+      //   geoByIP.longitude,
+      //   3,
+      //   lang,
+      //   degrees,
+      // );
 
-      const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
-      const current = await weatherbitService.getCurrent(
-        geo.latitude,
-        geo.longitude,
-        lang,
-        degrees,
-      );
-      const forecast = await weatherbitService.getForecast(
-        geo.latitude,
-        geo.longitude,
-        3,
-        lang,
-        degrees,
-      );
+      // window.console.log(current);
+      // window.console.log(forecast);
 
-      window.console.log(current);
-      window.console.log(forecast);
+      // const geoByPlace = await hereService.getGeoByPlace(lang, place.city);
+
+      // window.console.log(geoByPlace);
 
       setLoading(false);
     }
+
+    Utils.consoleInfo();
     fetchData();
-  }, [lang, degrees]);
+  }, []);
 
   return (
     <React.Fragment>
       <div className="app">
         <div className="app-header">
           <Control
+            txtRefresh={txt.refresh}
             loading={loading}
             cbLoading={cbLoading}
             lang={lang}
@@ -90,11 +112,20 @@ function App() {
             degrees={degrees}
             cbDegrees={cbDegrees}
           />
-          <Search />
+          <Search
+            txtInput={txt.input}
+            txtVoice={txt.voice}
+            txtSearch={txt.search}
+          />
         </div>
         <div className="app-main">
-          <Weather />
-          <Maps />
+          <Weather
+            place={place}
+            txtFeels={txt.feels}
+            txtWind={txt.wind}
+            txtHum={txt.hum}
+          />
+          <Maps txtLat={txt.lat} txtLon={txt.lon} coords={coords} />
         </div>
       </div>
       <div className="app-footer">

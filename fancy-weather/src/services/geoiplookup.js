@@ -3,8 +3,13 @@ export default class GeoIPLookupService {
     this.apiBase = data.apiBase;
   }
 
-  async getGeo(ip) {
+  async getGeoByIP(ip) {
     const res = await fetch(`${this.apiBase}/${ip}`);
+
+    if (!res.ok) {
+      throw new Error(`Could not get Geo for ${ip}. Received ${res.status}`);
+    }
+
     const json = await res.json();
 
     return json;

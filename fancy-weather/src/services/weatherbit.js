@@ -2,8 +2,7 @@ import Utils from '../utils';
 
 export default class WeatherbitService {
   constructor(data) {
-    this.apiBaseCurrent = data.apiBaseCurrent;
-    this.apiBaseForecast = data.apiBaseForecast;
+    this.apiBase = data.apiBase;
     this.apiKey = data.apiKey;
   }
 
@@ -16,8 +15,15 @@ export default class WeatherbitService {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBaseCurrent}?key=${this.apiKey}&lat=${lat}&lon=${lon}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/current?key=${this.apiKey}&lat=${lat}&lon=${lon}&lang=${lang}&units=${units}`,
     );
+
+    if (!res.ok) {
+      throw new Error(
+        `Could not get Current weather for ${lat}, ${lon}. Received ${res.status}`,
+      );
+    }
+
     const json = await res.json();
 
     return json;
@@ -33,8 +39,15 @@ export default class WeatherbitService {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBaseForecast}?key=${this.apiKey}&lat=${lat}&lon=${lon}&days=${days}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/forecast/daily?key=${this.apiKey}&lat=${lat}&lon=${lon}&days=${days}&lang=${lang}&units=${units}`,
     );
+
+    if (!res.ok) {
+      throw new Error(
+        `Could not get Forecast weather for ${lat}, ${lon}. Received ${res.status}`,
+      );
+    }
+
     const json = await res.json();
 
     return json;

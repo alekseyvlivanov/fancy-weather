@@ -4,24 +4,37 @@ import microphone from '../../assets/microphone.svg';
 
 import './search.css';
 
-function Search() {
+function Search(props) {
+  const [input, setInput] = React.useState('');
+
+  function cbInput(e) {
+    setInput(e.target.value);
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    window.console.log(`submit: ${input}`);
+  }
+
   return (
-    <div className="search-city">
+    <form className="search-city" onSubmit={onSubmit}>
       <input
         className="search-input"
         type="text"
-        placeholder="Search city or ZIP"
+        placeholder={props.txtInput}
+        value={input}
+        onChange={cbInput}
       />
       <img
         className="search-voice"
         src={microphone}
         alt="Search by voice"
-        title="Search by voice"
+        title={props.txtVoice}
       />
       <button className="search-submit" type="submit">
-        Search
+        {props.txtSearch}
       </button>
-    </div>
+    </form>
   );
 }
 

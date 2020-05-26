@@ -9,7 +9,7 @@ function Control(props) {
     <div className="control-block">
       <button
         className="control-refresh"
-        title="Refresh background"
+        title={props.txtRefresh}
         onClick={() => props.cbLoading(!props.loading)}
       >
         <img

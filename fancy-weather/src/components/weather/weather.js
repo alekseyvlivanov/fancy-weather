@@ -4,19 +4,20 @@ import today from '../../assets/today.svg';
 
 import './weather.css';
 
-function Weather() {
+function Weather(props) {
   return (
     <div className="weather-block">
       <div className="weather-title">
         <h1 className="city-country">
-          <span className="city">Vladivostok</span>
-          <span className="country">Russia</span>
+          <span className="city">{props.place.city}</span>
+          <span className="country">{props.place.country}</span>
         </h1>
         <h3 className="date-time">
           <span className="date">Fri 22 May</span>
           <span className="time">15:21:34</span>
         </h3>
       </div>
+
       <div className="weather-today">
         <div className="today-left">
           <span className="left-temp">10</span>
@@ -26,12 +27,13 @@ function Weather() {
           <img className="today-icon" src={today} alt="today icon" />
           <div className="today-summary">
             <p className="summary">Overcast</p>
-            <p className="feels">Feels like: 7°</p>
-            <p className="wind">Wind: 2 m/s</p>
-            <p className="humidity">Humidity: 83%</p>
+            <p className="feels">{props.txtFeels}: 7°</p>
+            <p className="wind">{props.txtWind}: 2 m/s</p>
+            <p className="humidity">{props.txtHum}: 83%</p>
           </div>
         </div>
       </div>
+
       <div className="weather-days">
         <div className="weather-day">
           <h5>Tuesday</h5>
