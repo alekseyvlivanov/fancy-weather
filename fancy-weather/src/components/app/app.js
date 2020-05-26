@@ -34,8 +34,12 @@ function App() {
 
   React.useEffect(() => {
     Utils.consoleInfo();
+  }, []);
 
+  React.useEffect(() => {
     async function fetchData() {
+      setLoading(true);
+
       const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
       const ip = await cloudflareService.getIP();
 
@@ -70,7 +74,7 @@ function App() {
       setLoading(false);
     }
     fetchData();
-  }, [degrees, lang]);
+  }, [lang, degrees]);
 
   return (
     <React.Fragment>

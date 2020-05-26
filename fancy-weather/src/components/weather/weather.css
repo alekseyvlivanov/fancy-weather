@@ -107,13 +107,15 @@
   margin-left: 1rem;
 }
 
+@media (max-width: 1024px) {
+  .weather-title {
+    text-align: center;
+  }
+}
+
 @media (max-width: 425px) {
   .weather-block {
     width: unset;
-  }
-
-  .weather-title {
-    text-align: center;
   }
 
   .city-country {

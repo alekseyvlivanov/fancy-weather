@@ -10,7 +10,7 @@ function consoleInfo() {
     'Если не работают fetch запросы - отключи блокировщик рекламы.',
   );
   window.console.info(
-    'Большинство сервисов определения IP/GEO/etc занесены в списки EasyList и EasyPrivacy.',
+    'Большинство сервисов определения GEO/IP занесены в списки EasyList/EasyPrivacy.',
   );
   window.console.groupEnd();
 }
