@@ -4,19 +4,20 @@ export default class YandexService {
     this.apiKey = data.apiKey;
   }
 
-  async translate(text, lang) {
+  async translate(arr, lang) {
+    const text = arr.map((e) => `&text=${e}`).join('');
     const res = await fetch(
       encodeURI(
-        `${this.apiBase}/translate?key=${this.apiKey}&text=${text}&lang=${lang}`,
+        `${this.apiBase}/translate?key=${this.apiKey}${text}&lang=${lang}`,
       ),
     );
 
     if (!res.ok) {
-      throw new Error(`Could not translate ${text}. Received ${res.status}`);
+      throw new Error(`Could not translate ${arr}. Received ${res.status}`);
     }
 
     const json = await res.json();
 
-    return json.text[0];
+    return json.text;
   }
 }

@@ -8,7 +8,8 @@ export default {
   },
 
   Here: {
-    apiBase: 'https://geocode.search.hereapi.com/v1/geocode',
+    apiBaseGeocode: 'https://geocode.search.hereapi.com/v1/geocode',
+    apiBaseRevgeocode: 'https://revgeocode.search.hereapi.com/v1/revgeocode',
     apiKey: 'cRw4d8lz-YhlxoryOCZlmiBcjvEHZNJo6tYWbCHjmEw',
   },
 

@@ -5,6 +5,8 @@ import today from '../../assets/today.svg';
 import './weather.css';
 
 function Weather(props) {
+  const current = props.weather.current.data[0];
+
   return (
     <div className="weather-block">
       <div className="weather-title">
@@ -20,16 +22,23 @@ function Weather(props) {
 
       <div className="weather-today">
         <div className="today-left">
-          <span className="left-temp">10</span>
+          <span className="left-temp">{current.temp}</span>
           <span className="left-degrees">°</span>
         </div>
         <div className="today-right">
           <img className="today-icon" src={today} alt="today icon" />
           <div className="today-summary">
-            <p className="summary">Overcast</p>
-            <p className="feels">{props.txtFeels}: 7°</p>
-            <p className="wind">{props.txtWind}: 2 m/s</p>
-            <p className="humidity">{props.txtHum}: 83%</p>
+            <p className="summary">{current.weather.description}</p>
+            <p className="feels">
+              {props.txtFeels}: {current.app_temp}°
+            </p>
+            <p className="wind">
+              {props.txtWind}: {current.wind_spd.toFixed(1)}{' '}
+              <span className="ms">{props.txtMs}</span>
+            </p>
+            <p className="humidity">
+              {props.txtHum}: {current.rh}%
+            </p>
           </div>
         </div>
       </div>

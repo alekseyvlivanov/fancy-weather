@@ -7,20 +7,19 @@ export default class WeatherbitService {
   }
 
   async getCurrent(
-    lat,
-    lon,
+    coords,
     lang = Utils.initValues.lang,
     degrees = Utils.initValues.degrees,
   ) {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBase}/current?key=${this.apiKey}&lat=${lat}&lon=${lon}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/current?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
     );
 
     if (!res.ok) {
       throw new Error(
-        `Could not get Current weather for ${lat}, ${lon}. Received ${res.status}`,
+        `Could not get Current weather for ${coords}. Received ${res.status}`,
       );
     }
 
@@ -30,8 +29,7 @@ export default class WeatherbitService {
   }
 
   async getForecast(
-    lat,
-    lon,
+    coords,
     days,
     lang = Utils.initValues.lang,
     degrees = Utils.initValues.degrees,
@@ -39,12 +37,12 @@ export default class WeatherbitService {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBase}/forecast/daily?key=${this.apiKey}&lat=${lat}&lon=${lon}&days=${days}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/forecast/daily?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&days=${days}&lang=${lang}&units=${units}`,
     );
 
     if (!res.ok) {
       throw new Error(
-        `Could not get Forecast weather for ${lat}, ${lon}. Received ${res.status}`,
+        `Could not get Forecast weather for ${coords}. Received ${res.status}`,
       );
     }
 

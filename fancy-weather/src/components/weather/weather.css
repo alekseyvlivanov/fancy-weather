@@ -42,13 +42,13 @@
 }
 
 .left-temp {
-  font-size: 30.6rem;
+  font-size: 22rem;
   font-weight: bold;
-  line-height: 30.6rem;
+  line-height: 1;
 }
 
 .left-degrees {
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: bold;
   line-height: 1;
 }
@@ -60,14 +60,17 @@
 }
 
 .today-icon {
-  height: 100px;
-  width: 160px;
+  width: 120px;
 }
 
 .today-summary {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  line-height: 2.6rem;
+  line-height: 1.8rem;
+}
+
+.ms {
+  text-transform: lowercase;
 }
 
 .weather-days {
@@ -85,9 +88,9 @@
 }
 
 .weather-day h5 {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: bold;
-  line-height: 2.7rem;
+  line-height: 1;
 }
 
 .day-summary {
@@ -95,14 +98,13 @@
 }
 
 .day-summary span {
-  font-size: 8rem;
+  font-size: 6rem;
   font-weight: 600;
-  line-height: 9.8rem;
+  line-height: 1;
 }
 
 .day-icon {
-  height: 44px;
-  width: 66px;
+  width: 48px;
   margin-top: 1rem;
   margin-left: 1rem;
 }

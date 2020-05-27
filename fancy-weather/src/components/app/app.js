@@ -26,15 +26,17 @@ function App() {
   const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
   const yandexService = new YandexService(APIDATA.Yandex);
 
-  // Main data object
-  const obj = { place: Utils.initValues.place };
-
   const [loading, setLoading] = React.useState(true);
   const [lang, setLang] = React.useState(Utils.initValues.lang);
   const [degrees, setDegrees] = React.useState(Utils.initValues.degrees);
-  const [place, setPlace] = React.useState(obj.place[lang]);
   const [coords, setCoords] = React.useState(Utils.initValues.coords);
   const [txt, setTxt] = React.useState(Utils.initValues.txt[lang]);
+
+  const [placeFull, setPlaceFull] = React.useState(Utils.initValues.place);
+  const [place, setPlace] = React.useState(Utils.initValues.place[lang]);
+
+  const [weatherFull, setWeatherFull] = React.useState({});
+  const [weather, setWeather] = React.useState({});
 
   function cbLoading(value) {
     setLoading(value);
@@ -43,7 +45,8 @@ function App() {
   function cbLang(value) {
     localStorage.setItem('lang', value);
     setLang(value);
-    setPlace(obj.place[value]);
+    setPlace(placeFull[value]);
+    setWeather(weatherFull[value]);
     setTxt(Utils.initValues.txt[value]);
   }
 
@@ -52,54 +55,152 @@ function App() {
     setDegrees(value);
   }
 
-  function cbPlace(value) {
-    setPlace(value);
+  async function getPlaceByGeo(geo) {
+    let res = null;
+
+    const enPlace = await hereService.getPlaceByGeo('en', geo);
+    const ruPlace = await hereService.getPlaceByGeo('ru', geo);
+
+    if (enPlace.items.length && ruPlace.items.length) {
+      res = {
+        en: {
+          city: enPlace.items[0].address.city,
+          country: enPlace.items[0].address.countryName,
+        },
+        ru: {
+          city: ruPlace.items[0].address.city,
+          country: ruPlace.items[0].address.countryName,
+        },
+      };
+
+      const resBe = await yandexService.translate(
+        [ruPlace.items[0].address.city, ruPlace.items[0].address.countryName],
+        'be',
+      );
+
+      res.be = resBe
+        ? {
+            city: resBe[0],
+            country: resBe[1],
+          }
+        : res.ru;
+    }
+
+    return res;
   }
 
-  function cbCoords(value) {
-    setCoords(value);
+  async function getInitialGeo() {
+    const ip = await cloudflareService.getIP();
+    if (!ip) return null;
+
+    const geoByIP = await geoIPLookupService.getGeoByIP(ip);
+    if (!geoByIP) return null;
+
+    return geoByIP;
+  }
+
+  async function getFullData() {
+    const newPlace = await getPlaceByGeo(coords);
+
+    if (newPlace) {
+      const enCurrent = await weatherbitService.getCurrent(
+        coords,
+        'en',
+        degrees,
+      );
+      const ruCurrent = await weatherbitService.getCurrent(
+        coords,
+        'ru',
+        degrees,
+      );
+      const beCurrent = await weatherbitService.getCurrent(
+        coords,
+        'be',
+        degrees,
+      );
+
+      const enForecast = await weatherbitService.getForecast(
+        coords,
+        3,
+        'en',
+        degrees,
+      );
+      const ruForecast = await weatherbitService.getForecast(
+        coords,
+        3,
+        'ru',
+        degrees,
+      );
+      const beForecast = await weatherbitService.getForecast(
+        coords,
+        3,
+        'be',
+        degrees,
+      );
+
+      if (
+        enCurrent &&
+        ruCurrent &&
+        beCurrent &&
+        enForecast &&
+        ruForecast &&
+        beForecast
+      ) {
+        setPlaceFull(newPlace);
+        setPlace(newPlace[lang]);
+
+        const newWeather = {
+          en: {
+            current: enCurrent,
+            forecast: enForecast,
+          },
+          ru: {
+            current: ruCurrent,
+            forecast: ruForecast,
+          },
+          be: {
+            current: beCurrent,
+            forecast: beForecast,
+          },
+        };
+
+        setWeatherFull(newWeather);
+        setWeather(newWeather[lang]);
+      }
+    } else {
+      window.console.group();
+      window.console.warn("Can't fetch data!");
+      window.console.warn('Check Network tab in the Developer Tools.');
+      window.console.groupEnd();
+    }
+
+    return;
   }
 
   React.useEffect(() => {
     async function fetchData() {
-      // const ip = await cloudflareService.getIP();
+      const geo = await getInitialGeo();
 
-      // window.console.log(ip);
+      if (geo) {
+        setCoords({ lat: geo.latitude, lon: geo.longitude });
+      }
 
-      // const geoByIP = await geoIPLookupService.getGeoByIP(ip);
-
-      // window.console.log(`${geoByIP.city}, ${geoByIP.country_name}`);
-      // window.console.log(`latitude: ${geoByIP.latitude}`);
-      // window.console.log(`longitude: ${geoByIP.longitude}`);
-      // window.console.log(`timezone_name: ${geoByIP.timezone_name}`);
-
-      // const current = await weatherbitService.getCurrent(
-      //   geoByIP.latitude,
-      //   geoByIP.longitude,
-      //   lang,
-      //   degrees,
-      // );
-      // const forecast = await weatherbitService.getForecast(
-      //   geoByIP.latitude,
-      //   geoByIP.longitude,
-      //   3,
-      //   lang,
-      //   degrees,
-      // );
-
-      // window.console.log(current);
-      // window.console.log(forecast);
-
-      // const geoByPlace = await hereService.getGeoByPlace(lang, place.city);
-
-      // window.console.log(geoByPlace);
+      await getFullData();
 
       setLoading(false);
     }
 
     Utils.consoleInfo();
     fetchData();
-  }, []);
+  }, [getFullData, getInitialGeo]);
+
+  // React.useEffect(() => {
+  //   setPlace(placeFull[lang]);
+  // }, [placeFull]);
+
+  // React.useEffect(() => {
+  //   setWeather(weatherFull[lang]);
+  // }, [weatherFull]);
 
   return (
     <React.Fragment>
@@ -121,20 +222,29 @@ function App() {
           />
         </div>
         <div className="app-main">
-          <Weather
-            place={place}
-            txtFeels={txt.feels}
-            txtWind={txt.wind}
-            txtHum={txt.hum}
-          />
+          {Object.entries(weather).length > 0 ? (
+            <Weather
+              place={place}
+              weather={weather}
+              txtFeels={txt.feels}
+              txtWind={txt.wind}
+              txtMs={txt.ms}
+              txtHum={txt.hum}
+            />
+          ) : null}
           <Maps txtLat={txt.lat} txtLon={txt.lon} coords={coords} />
         </div>
       </div>
       <div className="app-footer">
         <Marquee />
       </div>
-      <a href="https://pixabay.com/" alt="pixabay" target="_blank">
-        <img className="pixabay" src={pixabay} />
+      <a
+        href="https://pixabay.com/"
+        alt="pixabay"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <img className="pixabay" src={pixabay} alt="pixabay" />
       </a>
     </React.Fragment>
   );

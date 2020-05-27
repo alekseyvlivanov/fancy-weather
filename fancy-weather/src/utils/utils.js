@@ -4,16 +4,16 @@ const initValues = {
   coords: { lat: 43.1056, lon: 131.874 },
   place: {
     en: {
-      city: 'Vladivostok',
-      country: 'Russia',
+      city: 'Vladivostok1',
+      country: 'Russia1',
     },
     ru: {
-      city: 'Владивосток',
-      country: 'Россия',
+      city: 'Владивосток1',
+      country: 'Россия1',
     },
     be: {
-      city: 'Уладзівасток',
-      country: 'Расія',
+      city: 'Уладзівасток1',
+      country: 'Расія1',
     },
   },
   txt: {
@@ -24,6 +24,7 @@ const initValues = {
       search: 'Search',
       feels: 'Feels like',
       wind: 'Wind',
+      ms: 'm/s',
       hum: 'Humidity',
       lat: 'Latitude',
       lon: 'Longitude',
@@ -35,6 +36,7 @@ const initValues = {
       search: 'Поиск',
       feels: 'Ощущается',
       wind: 'Ветер',
+      ms: 'м/с',
       hum: 'Влажность',
       lat: 'Широта',
       lon: 'Долгота',
@@ -46,6 +48,7 @@ const initValues = {
       search: 'Пошук',
       feels: 'Адчуваецца',
       wind: 'Вецер',
+      ms: 'м/з',
       hum: 'Вільготнасць',
       lat: 'Шырата',
       lon: 'Даўгата',
