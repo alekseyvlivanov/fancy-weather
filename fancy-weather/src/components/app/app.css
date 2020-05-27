@@ -24,6 +24,15 @@
   margin-left: 4rem;
 }
 
+.pixabay {
+  position: absolute;
+  bottom: 4rem;
+  left: 1rem;
+  height: 1.4rem;
+  filter: invert(81%) sepia(8%) saturate(113%) hue-rotate(163deg)
+    brightness(91%) contrast(89%);
+}
+
 @media (max-width: 1440px) {
   .app-header {
     margin-right: 2rem;

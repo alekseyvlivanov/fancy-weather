@@ -8,6 +8,8 @@ import Marquee from '../marquee';
 
 import Utils from '../../utils';
 
+import pixabay from '../../assets/pixabay.svg';
+
 import './app.css';
 
 import APIDATA from '../../services/api-data';
@@ -131,6 +133,9 @@ function App() {
       <div className="app-footer">
         <Marquee />
       </div>
+      <a href="https://pixabay.com/" alt="pixabay">
+        <img className="pixabay" src={pixabay} />
+      </a>
     </React.Fragment>
   );
 }
