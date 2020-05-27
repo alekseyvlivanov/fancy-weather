@@ -6,6 +6,9 @@ import './weather.css';
 
 function Weather(props) {
   const current = props.weather.current.data[0];
+  const forecast0 = props.weather.forecast.data[0];
+  const forecast1 = props.weather.forecast.data[1];
+  const forecast2 = props.weather.forecast.data[2];
 
   return (
     <div className="weather-block">
@@ -47,21 +50,21 @@ function Weather(props) {
         <div className="weather-day">
           <h5>Tuesday</h5>
           <div className="day-summary">
-            <span>7°</span>
+            <span>{forecast0.temp}°</span>
             <img className="day-icon" src={today} alt="day icon" />
           </div>
         </div>
         <div className="weather-day">
           <h5>Wednesday</h5>
           <div className="day-summary">
-            <span>6°</span>
+            <span>{forecast1.temp}°</span>
             <img className="day-icon" src={today} alt="day icon" />
           </div>
         </div>
         <div className="weather-day">
           <h5>Thursday</h5>
           <div className="day-summary">
-            <span>3°</span>
+            <span>{forecast2.temp}°</span>
             <img className="day-icon" src={today} alt="day icon" />
           </div>
         </div>

@@ -3,7 +3,7 @@ import Utils from '../utils';
 export default class WeatherbitService {
   constructor(data) {
     this.apiBase = data.apiBase;
-    this.apiKey = data.apiKey;
+    this.apiKey = data.apiKeys[1];
   }
 
   async getCurrent(
@@ -15,9 +15,6 @@ export default class WeatherbitService {
 
     const res = await fetch(
       `${this.apiBase}/current?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
-      {
-        mode: 'no-cors',
-      },
     );
 
     if (!res.ok) {

@@ -29,16 +29,16 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [lang, setLang] = React.useState(Utils.initValues.lang);
   const [degrees, setDegrees] = React.useState(Utils.initValues.degrees);
-  const [coords, setCoords] = React.useState(Utils.initValues.coords);
   const [txt, setTxt] = React.useState(Utils.initValues.txt[lang]);
 
-  const [placeFull, setPlaceFull] = React.useState(Utils.initValues.place);
-  const [place, setPlace] = React.useState(Utils.initValues.place[lang]);
-
+  const [coords, setCoords] = React.useState({});
+  const [placeFull, setPlaceFull] = React.useState({});
+  const [place, setPlace] = React.useState({});
   const [weatherFull, setWeatherFull] = React.useState({});
   const [weather, setWeather] = React.useState({});
 
   function cbLoading(value) {
+    // TODO refresh background
     setLoading(value);
   }
 
@@ -89,118 +89,119 @@ function App() {
     return res;
   }
 
-  async function getInitialGeo() {
-    const ip = await cloudflareService.getIP();
-    if (!ip) return null;
+  function initApp() {
+    async function getInitialGeo() {
+      Utils.consoleInfo();
 
-    const geoByIP = await geoIPLookupService.getGeoByIP(ip);
-    if (!geoByIP) return null;
+      const ip = await cloudflareService.getIP();
+      if (!ip) return null;
 
-    return geoByIP;
+      const geoByIP = await geoIPLookupService.getGeoByIP(ip);
+      if (!geoByIP) return null;
+
+      return geoByIP;
+    }
+    getInitialGeo().then((geoByIP) => {
+      setCoords(
+        geoByIP
+          ? { lat: geoByIP.latitude, lon: geoByIP.longitude }
+          : Utils.initValues.coords,
+      );
+    });
   }
 
-  async function getFullData() {
-    const newPlace = await getPlaceByGeo(coords);
+  React.useEffect(initApp, []);
 
-    if (newPlace) {
-      const enCurrent = await weatherbitService.getCurrent(
-        coords,
-        'en',
-        degrees,
-      );
-      const ruCurrent = await weatherbitService.getCurrent(
-        coords,
-        'ru',
-        degrees,
-      );
-      const beCurrent = await weatherbitService.getCurrent(
-        coords,
-        'be',
-        degrees,
-      );
+  function updateApp() {
+    if (Object.entries(coords).length === 0) return;
 
-      const enForecast = await weatherbitService.getForecast(
-        coords,
-        3,
-        'en',
-        degrees,
-      );
-      const ruForecast = await weatherbitService.getForecast(
-        coords,
-        3,
-        'ru',
-        degrees,
-      );
-      const beForecast = await weatherbitService.getForecast(
-        coords,
-        3,
-        'be',
-        degrees,
-      );
+    setLoading(true);
 
-      if (
-        enCurrent &&
-        ruCurrent &&
-        beCurrent &&
-        enForecast &&
-        ruForecast &&
-        beForecast
-      ) {
-        setPlaceFull(newPlace);
-        setPlace(newPlace[lang]);
+    async function getFullData() {
+      const newPlace = await getPlaceByGeo(coords);
 
-        const newWeather = {
-          en: {
-            current: enCurrent,
-            forecast: enForecast,
-          },
-          ru: {
-            current: ruCurrent,
-            forecast: ruForecast,
-          },
-          be: {
-            current: beCurrent,
-            forecast: beForecast,
-          },
-        };
+      if (newPlace) {
+        const enCurrent = await weatherbitService.getCurrent(
+          coords,
+          'en',
+          degrees,
+        );
+        const ruCurrent = await weatherbitService.getCurrent(
+          coords,
+          'ru',
+          degrees,
+        );
+        const beCurrent = await weatherbitService.getCurrent(
+          coords,
+          'be',
+          degrees,
+        );
 
-        setWeatherFull(newWeather);
-        setWeather(newWeather[lang]);
+        const enForecast = await weatherbitService.getForecast(
+          coords,
+          3,
+          'en',
+          degrees,
+        );
+        const ruForecast = await weatherbitService.getForecast(
+          coords,
+          3,
+          'ru',
+          degrees,
+        );
+        const beForecast = await weatherbitService.getForecast(
+          coords,
+          3,
+          'be',
+          degrees,
+        );
+
+        if (
+          enCurrent &&
+          ruCurrent &&
+          beCurrent &&
+          enForecast &&
+          ruForecast &&
+          beForecast
+        ) {
+          setPlaceFull(newPlace);
+          setPlace(newPlace[lang]);
+
+          const newWeather = {
+            en: {
+              current: enCurrent,
+              forecast: enForecast,
+            },
+            ru: {
+              current: ruCurrent,
+              forecast: ruForecast,
+            },
+            be: {
+              current: beCurrent,
+              forecast: beForecast,
+            },
+          };
+
+          setWeatherFull(newWeather);
+          setWeather(newWeather[lang]);
+        }
+      } else {
+        window.console.group();
+        window.console.warn("Can't fetch data!");
+        window.console.warn('Check Network tab in the Developer Tools.');
+        window.console.groupEnd();
       }
-    } else {
-      window.console.group();
-      window.console.warn("Can't fetch data!");
-      window.console.warn('Check Network tab in the Developer Tools.');
-      window.console.groupEnd();
-    }
 
-    return;
+      return;
+    }
+    getFullData()
+      .then()
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
-  React.useEffect(() => {
-    async function fetchData() {
-      const geo = await getInitialGeo();
-
-      if (geo) {
-        setCoords({ lat: geo.latitude, lon: geo.longitude });
-      }
-
-      await getFullData();
-
-      setLoading(false);
-    }
-
-    Utils.consoleInfo();
-    fetchData();
-  }, [getFullData, getInitialGeo]);
-
-  // React.useEffect(() => {
-  //   setPlace(placeFull[lang]);
-  // }, [placeFull]);
-
-  // React.useEffect(() => {
-  //   setWeather(weatherFull[lang]);
-  // }, [weatherFull]);
+  React.useEffect(updateApp, [coords]);
 
   return (
     <React.Fragment>

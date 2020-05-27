@@ -20,7 +20,10 @@ export default {
 
   Weatherbit: {
     apiBase: 'https://api.weatherbit.io/v2.0',
-    apiKey: 'dd1212eb8d404c29b988e294b30bbbf6',
+    apiKeys: [
+      'dd1212eb8d404c29b988e294b30bbbf6',
+      '5c12df4d5bcb4f3bb69c89d4bed54ea9',
+    ],
   },
 
   Yandex: {

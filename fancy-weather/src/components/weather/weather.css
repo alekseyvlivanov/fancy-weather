@@ -98,14 +98,14 @@
 }
 
 .day-summary span {
-  font-size: 6rem;
-  font-weight: 600;
+  font-size: 5rem;
+  font-weight: 400;
   line-height: 1;
 }
 
 .day-icon {
-  width: 48px;
-  margin-top: 1rem;
+  width: 40px;
+  /* margin-top: 1rem; */
   margin-left: 1rem;
 }
 

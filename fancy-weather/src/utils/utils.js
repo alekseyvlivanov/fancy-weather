@@ -2,20 +2,6 @@ const initValues = {
   lang: localStorage.getItem('lang') || 'en',
   degrees: localStorage.getItem('degrees') || 'celcius',
   coords: { lat: 43.1056, lon: 131.874 },
-  place: {
-    en: {
-      city: 'Vladivostok1',
-      country: 'Russia1',
-    },
-    ru: {
-      city: 'Владивосток1',
-      country: 'Россия1',
-    },
-    be: {
-      city: 'Уладзівасток1',
-      country: 'Расія1',
-    },
-  },
   txt: {
     en: {
       refresh: 'Refresh background',
