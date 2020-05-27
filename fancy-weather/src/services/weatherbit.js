@@ -15,6 +15,9 @@ export default class WeatherbitService {
 
     const res = await fetch(
       `${this.apiBase}/current?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
+      {
+        mode: 'no-cors',
+      },
     );
 
     if (!res.ok) {
