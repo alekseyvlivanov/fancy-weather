@@ -32,7 +32,6 @@ export default class WeatherbitService {
 
   async getForecast(
     coords,
-    days,
     lang = Utils.initValues.lang,
     degrees = Utils.initValues.degrees,
   ) {
@@ -41,9 +40,7 @@ export default class WeatherbitService {
     const res = await fetch(
       `${this.apiBase}/forecast/daily?key=${
         this.apiKeys[Math.round(Math.random())]
-      }&lat=${coords.lat}&lon=${
-        coords.lon
-      }&days=${days}&lang=${lang}&units=${units}`,
+      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
     );
 
     if (!res.ok) {

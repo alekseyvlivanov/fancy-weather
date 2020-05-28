@@ -189,19 +189,16 @@ function App() {
 
         const enForecast = await weatherbitService.getForecast(
           coords,
-          4,
           'en',
           degrees,
         );
         const ruForecast = await weatherbitService.getForecast(
           coords,
-          4,
           'ru',
           degrees,
         );
         const beForecast = await weatherbitService.getForecast(
           coords,
-          4,
           'be',
           degrees,
         );
