@@ -251,7 +251,7 @@ function App() {
 
   React.useEffect(updateApp, [coords]);
 
-  return (
+  return Object.entries(weather).length > 0 ? (
     <React.Fragment>
       <div className="app">
         <div className="app-header">
@@ -273,27 +273,30 @@ function App() {
         </div>
 
         <div className="app-main">
-          {Object.entries(weather).length > 0 ? (
-            <Weather
-              place={place}
-              dtDay={dayTime.format('ddd D MMM')}
-              dtTime={dayTime.format('HH:mm:ss')}
-              dtF1={dayTime.add(1, 'day').format('dddd')}
-              dtF2={dayTime.add(2, 'day').format('dddd')}
-              dtF3={dayTime.add(3, 'day').format('dddd')}
-              weather={weather}
-              txtFeels={txt.feels}
-              txtWind={txt.wind}
-              txtMs={txt.ms}
-              txtHum={txt.hum}
-            />
-          ) : null}
+          <Weather
+            place={place}
+            dtDay={dayTime.format('ddd D MMM')}
+            dtTime={dayTime.format('HH:mm:ss')}
+            dtF1={dayTime.add(1, 'day').format('dddd')}
+            dtF2={dayTime.add(2, 'day').format('dddd')}
+            dtF3={dayTime.add(3, 'day').format('dddd')}
+            weather={weather}
+            txtFeels={txt.feels}
+            txtWind={txt.wind}
+            txtMs={txt.ms}
+            txtHum={txt.hum}
+          />
           <Maps txtLat={txt.lat} txtLon={txt.lon} coords={coords} />
         </div>
       </div>
 
       <div className="app-footer">
-        <Marquee />
+        <Marquee
+          weather={weather}
+          txtWind={txt.wind}
+          txtMs={txt.ms}
+          txtHum={txt.hum}
+        />
       </div>
 
       <a
@@ -305,7 +308,7 @@ function App() {
         <img className="pixabay" src={pixabay} alt="pixabay" />
       </a>
     </React.Fragment>
-  );
+  ) : null;
 }
 
 export default App;

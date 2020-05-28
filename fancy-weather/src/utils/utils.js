@@ -47,10 +47,10 @@ function consoleInfo() {
   window.console.group();
   window.console.info('Уважаемый проверяющий!');
   window.console.info(
-    'Если не работают fetch запросы - отключи блокировщик рекламы.',
+    'Если не работают fetch запросы - отключи блокировщик рекламы, так как большинство сервисов определения GEO/IP занесены в списки EasyList/EasyPrivacy.',
   );
   window.console.info(
-    'Большинство сервисов определения GEO/IP занесены в списки EasyList/EasyPrivacy.',
+    'Также замечу, что используемые бесплатные сервисы, мягко говоря, неидеальны при задании языка отличного от английского.',
   );
   window.console.groupEnd();
 }
