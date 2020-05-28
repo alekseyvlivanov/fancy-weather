@@ -12,7 +12,8 @@
 }
 
 .date-time {
-  font-size: 2.4rem;
+  font-family: monospace;
+  font-size: 2.6rem;
   font-weight: 600;
   line-height: 4rem;
 }
@@ -42,7 +43,7 @@
 }
 
 .left-temp {
-  font-size: 22rem;
+  font-size: 20rem;
   font-weight: bold;
   line-height: 1;
 }
@@ -143,11 +144,6 @@
   .today-left {
     margin: 0;
     text-align: center;
-  }
-
-  .left-temp {
-    font-size: 20rem;
-    line-height: 20rem;
   }
 
   .today-icon {

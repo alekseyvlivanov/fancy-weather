@@ -2,6 +2,7 @@ const initValues = {
   lang: localStorage.getItem('lang') || 'en',
   degrees: localStorage.getItem('degrees') || 'celcius',
   coords: { lat: 43.1056, lon: 131.874 },
+  timezone: 'Asia/Vladivostok',
   txt: {
     en: {
       refresh: 'Refresh background',

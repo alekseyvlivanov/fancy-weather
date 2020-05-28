@@ -1,4 +1,7 @@
 import React from 'react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/be';
 
 import Control from '../control';
 import Search from '../search';
@@ -29,13 +32,42 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [lang, setLang] = React.useState(Utils.initValues.lang);
   const [degrees, setDegrees] = React.useState(Utils.initValues.degrees);
+  const [timezone, setTimezone] = React.useState(Utils.initValues.timezone);
   const [txt, setTxt] = React.useState(Utils.initValues.txt[lang]);
+
+  const [dayTime, setDayTime] = React.useState(dayjs().locale(lang));
+  const [dayTimeInterval, setDayTimeInterval] = React.useState(null);
 
   const [coords, setCoords] = React.useState({});
   const [placeFull, setPlaceFull] = React.useState({});
   const [place, setPlace] = React.useState({});
   const [weatherFull, setWeatherFull] = React.useState({});
   const [weather, setWeather] = React.useState({});
+
+  function updateTimer(value = lang) {
+    clearInterval(dayTimeInterval);
+    setDayTime(
+      dayjs(
+        new Date().toLocaleString('en-US', {
+          timeZone: timezone,
+        }),
+      ).locale(value),
+    );
+    setDayTimeInterval(
+      setInterval(() => {
+        setDayTime(
+          dayjs(
+            new Date().toLocaleString('en-US', {
+              timeZone: timezone,
+            }),
+          ).locale(value),
+          1000,
+        );
+      }),
+    );
+  }
+
+  React.useEffect(updateTimer, [timezone]);
 
   function cbLoading(value) {
     // TODO refresh background
@@ -46,6 +78,7 @@ function App() {
     localStorage.setItem('lang', value);
     setLang(value);
     setPlace(placeFull[value]);
+    updateTimer(value);
     setWeather(weatherFull[value]);
     setTxt(Utils.initValues.txt[value]);
   }
@@ -53,6 +86,19 @@ function App() {
   function cbDegrees(value) {
     localStorage.setItem('degrees', value);
     setDegrees(value);
+  }
+
+  function cbSearch(value) {
+    if (value.length > 0) {
+      hereService.getGeoByPlace(lang, value).then((geoByPlace) => {
+        if (geoByPlace) {
+          setCoords({
+            lat: geoByPlace.items[0].position.lat,
+            lon: geoByPlace.items[0].position.lng,
+          });
+        }
+      });
+    }
   }
 
   async function getPlaceByGeo(geo) {
@@ -139,19 +185,19 @@ function App() {
 
         const enForecast = await weatherbitService.getForecast(
           coords,
-          3,
+          4,
           'en',
           degrees,
         );
         const ruForecast = await weatherbitService.getForecast(
           coords,
-          3,
+          4,
           'ru',
           degrees,
         );
         const beForecast = await weatherbitService.getForecast(
           coords,
-          3,
+          4,
           'be',
           degrees,
         );
@@ -166,6 +212,8 @@ function App() {
         ) {
           setPlaceFull(newPlace);
           setPlace(newPlace[lang]);
+
+          setTimezone(enCurrent.data[0].timezone);
 
           const newWeather = {
             en: {
@@ -220,12 +268,19 @@ function App() {
             txtInput={txt.input}
             txtVoice={txt.voice}
             txtSearch={txt.search}
+            cbSearch={cbSearch}
           />
         </div>
+
         <div className="app-main">
           {Object.entries(weather).length > 0 ? (
             <Weather
               place={place}
+              dtDay={dayTime.format('ddd D MMM')}
+              dtTime={dayTime.format('HH:mm:ss')}
+              dtF1={dayTime.add(1, 'day').format('dddd')}
+              dtF2={dayTime.add(2, 'day').format('dddd')}
+              dtF3={dayTime.add(3, 'day').format('dddd')}
               weather={weather}
               txtFeels={txt.feels}
               txtWind={txt.wind}
@@ -236,9 +291,11 @@ function App() {
           <Maps txtLat={txt.lat} txtLon={txt.lon} coords={coords} />
         </div>
       </div>
+
       <div className="app-footer">
         <Marquee />
       </div>
+
       <a
         href="https://pixabay.com/"
         alt="pixabay"

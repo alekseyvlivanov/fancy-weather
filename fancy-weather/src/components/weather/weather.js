@@ -6,9 +6,9 @@ import './weather.css';
 
 function Weather(props) {
   const current = props.weather.current.data[0];
-  const forecast0 = props.weather.forecast.data[0];
   const forecast1 = props.weather.forecast.data[1];
   const forecast2 = props.weather.forecast.data[2];
+  const forecast3 = props.weather.forecast.data[3];
 
   return (
     <div className="weather-block">
@@ -18,8 +18,8 @@ function Weather(props) {
           <span className="country">{props.place.country}</span>
         </h1>
         <h3 className="date-time">
-          <span className="date">Fri 22 May</span>
-          <span className="time">15:21:34</span>
+          <span className="date">{props.dtDay}</span>
+          <span className="time">{props.dtTime}</span>
         </h3>
       </div>
 
@@ -48,23 +48,23 @@ function Weather(props) {
 
       <div className="weather-days">
         <div className="weather-day">
-          <h5>Tuesday</h5>
-          <div className="day-summary">
-            <span>{forecast0.temp}°</span>
-            <img className="day-icon" src={today} alt="day icon" />
-          </div>
-        </div>
-        <div className="weather-day">
-          <h5>Wednesday</h5>
+          <h5>{props.dtF1}</h5>
           <div className="day-summary">
             <span>{forecast1.temp}°</span>
             <img className="day-icon" src={today} alt="day icon" />
           </div>
         </div>
         <div className="weather-day">
-          <h5>Thursday</h5>
+          <h5>{props.dtF2}</h5>
           <div className="day-summary">
             <span>{forecast2.temp}°</span>
+            <img className="day-icon" src={today} alt="day icon" />
+          </div>
+        </div>
+        <div className="weather-day">
+          <h5>{props.dtF3}</h5>
+          <div className="day-summary">
+            <span>{forecast3.temp}°</span>
             <img className="day-icon" src={today} alt="day icon" />
           </div>
         </div>

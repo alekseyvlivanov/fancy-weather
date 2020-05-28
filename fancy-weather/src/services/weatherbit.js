@@ -3,7 +3,7 @@ import Utils from '../utils';
 export default class WeatherbitService {
   constructor(data) {
     this.apiBase = data.apiBase;
-    this.apiKey = data.apiKeys[1];
+    this.apiKeys = data.apiKeys;
   }
 
   async getCurrent(
@@ -14,7 +14,9 @@ export default class WeatherbitService {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBase}/current?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/current?key=${
+        this.apiKeys[Math.round(Math.random())]
+      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
     );
 
     if (!res.ok) {
@@ -37,7 +39,11 @@ export default class WeatherbitService {
     const units = degrees === 'celcius' ? 'M' : 'F';
 
     const res = await fetch(
-      `${this.apiBase}/forecast/daily?key=${this.apiKey}&lat=${coords.lat}&lon=${coords.lon}&days=${days}&lang=${lang}&units=${units}`,
+      `${this.apiBase}/forecast/daily?key=${
+        this.apiKeys[Math.round(Math.random())]
+      }&lat=${coords.lat}&lon=${
+        coords.lon
+      }&days=${days}&lang=${lang}&units=${units}`,
     );
 
     if (!res.ok) {

@@ -13,7 +13,7 @@ function Search(props) {
 
   function onSubmit(e) {
     e.preventDefault();
-    window.console.log(`submit: ${input}`);
+    props.cbSearch(input);
   }
 
   return (
