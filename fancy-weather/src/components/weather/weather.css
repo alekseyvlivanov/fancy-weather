@@ -34,7 +34,7 @@
   display: flex;
   justify-content: center;
   text-transform: uppercase;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .today-left {
@@ -79,7 +79,7 @@
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .weather-day {
@@ -106,8 +106,8 @@
 }
 
 .day-icon {
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   margin-left: 1rem;
 }
 
@@ -147,25 +147,39 @@
     text-align: center;
   }
 
+  .left-temp {
+    font-size: 10rem;
+  }
+
+  .left-degrees {
+    font-size: 5rem;
+  }
+
   .today-icon {
     align-self: center;
   }
 
   .today-summary {
     font-size: 2rem;
-    margin-top: 2rem;
+    line-height: 2.4rem;
+    margin-top: 1rem;
   }
 
   .weather-days {
     flex-direction: column;
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
 
   .weather-day {
     width: unset;
+    margin-top: 1rem;
   }
 
   .weather-day h5 {
     font-size: 2rem;
+  }
+
+  .maps-block {
+    margin-top: 2rem;
   }
 }
