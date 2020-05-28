@@ -19,6 +19,7 @@ import APIDATA from '../../services/api-data';
 import CloudflareService from '../../services/cloudflare';
 import GeoIPLookupService from '../../services/geoiplookup';
 import HereService from '../../services/here';
+import PixabayService from '../../services/pixabay';
 import WeatherbitService from '../../services/weatherbit';
 import YandexService from '../../services/yandex';
 
@@ -26,6 +27,7 @@ function App() {
   const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
   const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
   const hereService = new HereService(APIDATA.Here);
+  const pixabayService = new PixabayService(APIDATA.Pixabay);
   const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
   const yandexService = new YandexService(APIDATA.Yandex);
 
@@ -43,35 +45,11 @@ function App() {
   const [place, setPlace] = React.useState({});
   const [weatherFull, setWeatherFull] = React.useState({});
   const [weather, setWeather] = React.useState({});
+  const [photos, setPhotos] = React.useState({});
 
-  function updateTimer(value = lang) {
-    clearInterval(dayTimeInterval);
-    setDayTime(
-      dayjs(
-        new Date().toLocaleString('en-US', {
-          timeZone: timezone,
-        }),
-      ).locale(value),
-    );
-    setDayTimeInterval(
-      setInterval(() => {
-        setDayTime(
-          dayjs(
-            new Date().toLocaleString('en-US', {
-              timeZone: timezone,
-            }),
-          ).locale(value),
-          1000,
-        );
-      }),
-    );
-  }
-
-  React.useEffect(updateTimer, [timezone]);
-
-  function cbLoading(value) {
-    // TODO refresh background
-    setLoading(value);
+  function cbLoading() {
+    setLoading(true);
+    updateBackground();
   }
 
   function cbLang(value) {
@@ -90,6 +68,8 @@ function App() {
 
   function cbSearch(value) {
     if (value.length > 0) {
+      setLoading(true);
+
       hereService.getGeoByPlace(lang, value).then((geoByPlace) => {
         if (geoByPlace) {
           setCoords({
@@ -135,33 +115,57 @@ function App() {
     return res;
   }
 
-  function initApp() {
-    async function getInitialGeo() {
-      Utils.consoleInfo();
-
-      const ip = await cloudflareService.getIP();
-      if (!ip) return null;
-
-      const geoByIP = await geoIPLookupService.getGeoByIP(ip);
-      if (!geoByIP) return null;
-
-      return geoByIP;
+  function updateBackground() {
+    if (Object.entries(photos).length === 0) {
+      setLoading(false);
+      return;
     }
-    getInitialGeo().then((geoByIP) => {
-      setCoords(
-        geoByIP
-          ? { lat: geoByIP.latitude, lon: geoByIP.longitude }
-          : Utils.initValues.coords,
-      );
-    });
-  }
 
-  React.useEffect(initApp, []);
+    const newImage = new Image();
+    newImage.onload = function () {
+      document.body.style.backgroundImage = `
+      linear-gradient(
+        180deg,
+        rgba(8, 15, 26, 0.59) 0%,
+        rgba(17, 17, 46, 0.46) 100%
+      ),
+      url(${newImage.src})`;
+      setLoading(false);
+    };
+    newImage.onerror = function () {
+      setLoading(false);
+    };
+    newImage.src =
+      photos.hits[Math.floor(Math.random() * photos.hits.length)].largeImageURL;
+  }
+  React.useEffect(updateBackground, [photos]);
+
+  function updateTimer(value = lang) {
+    clearInterval(dayTimeInterval);
+    setDayTime(
+      dayjs(
+        new Date().toLocaleString('en-US', {
+          timeZone: timezone,
+        }),
+      ).locale(value),
+    );
+    setDayTimeInterval(
+      setInterval(() => {
+        setDayTime(
+          dayjs(
+            new Date().toLocaleString('en-US', {
+              timeZone: timezone,
+            }),
+          ).locale(value),
+          1000,
+        );
+      }),
+    );
+  }
+  React.useEffect(updateTimer, [timezone]);
 
   function updateApp() {
     if (Object.entries(coords).length === 0) return;
-
-    setLoading(true);
 
     async function getFullData() {
       const newPlace = await getPlaceByGeo(coords);
@@ -210,11 +214,6 @@ function App() {
           ruForecast &&
           beForecast
         ) {
-          setPlaceFull(newPlace);
-          setPlace(newPlace[lang]);
-
-          setTimezone(enCurrent.data[0].timezone);
-
           const newWeather = {
             en: {
               current: enCurrent,
@@ -230,8 +229,80 @@ function App() {
             },
           };
 
+          setPlaceFull(newPlace);
+          setPlace(newPlace[lang]);
+
           setWeatherFull(newWeather);
           setWeather(newWeather[lang]);
+
+          setTimezone(enCurrent.data[0].timezone);
+
+          let season;
+          switch (dayTime.month()) {
+            case 0:
+            case 1:
+            case 11:
+              season = 'winter';
+              break;
+            case 2:
+            case 3:
+            case 4:
+              season = 'spring';
+              break;
+            case 5:
+            case 6:
+            case 7:
+              season = 'summer';
+              break;
+            case 8:
+            case 9:
+            case 10:
+              season = 'autumn';
+              break;
+            default:
+              season = 'year';
+          }
+
+          let pod;
+          switch (dayTime.hour()) {
+            case 22:
+            case 23:
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+              pod = 'night';
+              break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+              pod = 'morning';
+              break;
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+              pod = 'afternoon';
+              break;
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+              pod = 'evening';
+              break;
+            default:
+              pod = 'day';
+          }
+
+          const newPhotos = await pixabayService.getPhotos(`${season} ${pod}`);
+          setPhotos(newPhotos);
         }
       } else {
         window.console.group();
@@ -242,14 +313,31 @@ function App() {
 
       return;
     }
-    getFullData()
-      .then()
-      .finally(() => {
-        setLoading(false);
-      });
+    getFullData();
   }
-
   React.useEffect(updateApp, [coords]);
+
+  function initApp() {
+    async function getInitialGeo() {
+      Utils.consoleInfo();
+
+      const ip = await cloudflareService.getIP();
+      if (!ip) return null;
+
+      const geoByIP = await geoIPLookupService.getGeoByIP(ip);
+      if (!geoByIP) return null;
+
+      return geoByIP;
+    }
+    getInitialGeo().then((geoByIP) => {
+      setCoords(
+        geoByIP
+          ? { lat: geoByIP.latitude, lon: geoByIP.longitude }
+          : Utils.initValues.coords,
+      );
+    });
+  }
+  React.useEffect(initApp, []);
 
   return Object.entries(weather).length > 0 ? (
     <React.Fragment>

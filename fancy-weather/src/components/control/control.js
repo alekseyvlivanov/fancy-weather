@@ -10,7 +10,7 @@ function Control(props) {
       <button
         className="control-refresh"
         title={props.txtRefresh}
-        onClick={() => props.cbLoading(!props.loading)}
+        onClick={() => props.cbLoading()}
       >
         <img
           src={refresh}
