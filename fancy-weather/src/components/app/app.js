@@ -2,6 +2,8 @@ import React from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/be';
+import 'notyf/notyf.min.css';
+import NotyfContext from '../../notyf-context';
 
 import Control from '../control';
 import Search from '../search';
@@ -24,6 +26,8 @@ import WeatherbitService from '../../services/weatherbit';
 import YandexService from '../../services/yandex';
 
 function App() {
+  const notyf = React.useContext(NotyfContext);
+
   const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
   const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
   const hereService = new HereService(APIDATA.Here);
@@ -61,6 +65,7 @@ function App() {
           mapsView.style.backgroundImage = `url(${newImage.src})`;
         })
         .catch((e) => {
+          notyf.error(`Couldn't get Map for ${geo.lat}, ${geo.lon}`);
           window.console.log(e);
           mapsView.style.backgroundImage = '';
         });
@@ -91,19 +96,23 @@ function App() {
   }
 
   function cbSearch(value) {
-    if (value.length > 0) {
+    const term = value.trim();
+    if (term.length > 0) {
       setLoading(true);
 
-      hereService.getGeoByPlace(lang, value).then((geoByPlace) => {
+      hereService.getGeoByPlace(lang, term).then((geoByPlace) => {
         if (geoByPlace && geoByPlace.items.length > 0) {
           setCoords({
             lat: geoByPlace.items[0].position.lat,
             lon: geoByPlace.items[0].position.lng,
           });
         } else {
+          notyf.error(`Found nothing for '${term}'`);
           setLoading(false);
         }
       });
+    } else {
+      notyf.error('Enter something to search');
     }
   }
 
@@ -159,6 +168,7 @@ function App() {
       setLoading(false);
     };
     newImage.onerror = function () {
+      notyf.error(`Couldn't load image from '${newImage.src}'`);
       setLoading(false);
     };
     newImage.src =
@@ -197,6 +207,10 @@ function App() {
       const newPlace = await getPlaceByGeo(coords);
 
       if (newPlace) {
+        notyf.success(
+          `Found: ${newPlace[lang].city}, ${newPlace[lang].country}`,
+        );
+
         const enCurrent = await weatherbitService.getCurrent(coords, 'en');
         const ruCurrent = await weatherbitService.getCurrent(coords, 'ru');
         const beCurrent = await weatherbitService.getCurrent(coords, 'be');
@@ -306,10 +320,9 @@ function App() {
           setPhotos(newPhotos);
         }
       } else {
-        window.console.group();
-        window.console.warn("Can't fetch data!");
-        window.console.warn('Check Network tab in the Developer Tools.');
-        window.console.groupEnd();
+        notyf.error(
+          `Couldn't determine Place by Geo: ${coords.lat}, ${coords.lon}`,
+        );
       }
 
       return;
@@ -323,10 +336,17 @@ function App() {
       Utils.consoleInfo();
 
       const ip = await cloudflareService.getIP();
-      if (!ip) return null;
+      if (!ip) {
+        notyf.error("Couldn't determine your IP - using default Geo data");
+        return null;
+      }
+      notyf.success(`Your IP: ${ip}`);
 
       const geoByIP = await geoIPLookupService.getGeoByIP(ip);
-      if (!geoByIP) return null;
+      if (!geoByIP) {
+        notyf.error("Couldn't determine your Geo by IP - using default");
+        return null;
+      }
 
       return geoByIP;
     }

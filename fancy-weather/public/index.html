@@ -9,8 +9,36 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://js.api.here.com/v3/3.1/mapsjs-ui.css"
+    />
   </head>
   <body>
     <div id="root"></div>
+    <div id="map" style="height: 400px; width: 375px;"></div>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <script>
+      const platform = new H.service.Platform({
+        apikey: 'cRw4d8lz-YhlxoryOCZlmiBcjvEHZNJo6tYWbCHjmEw',
+      });
+      const defaultLayers = platform.createDefaultLayers();
+      const map = new H.Map(
+        document.getElementById('map'),
+        defaultLayers.vector.normal.map,
+        {
+          center: { lat: 43.1056, lng: 131.874 },
+          zoom: 13,
+          pixelRatio: window.devicePixelRatio || 1,
+        },
+      );
+      window.addEventListener('resize', () => map.getViewPort().resize());
+      const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+      const ui = H.ui.UI.createDefault(map, defaultLayers);
+    </script>
   </body>
 </html>
