@@ -95,11 +95,13 @@ function App() {
       setLoading(true);
 
       hereService.getGeoByPlace(lang, value).then((geoByPlace) => {
-        if (geoByPlace) {
+        if (geoByPlace && geoByPlace.items.length > 0) {
           setCoords({
             lat: geoByPlace.items[0].position.lat,
             lon: geoByPlace.items[0].position.lng,
           });
+        } else {
+          setLoading(false);
         }
       });
     }
