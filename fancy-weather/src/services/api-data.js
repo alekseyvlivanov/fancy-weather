@@ -10,6 +10,7 @@ export default {
   Here: {
     apiBaseGeocode: 'https://geocode.search.hereapi.com/v1/geocode',
     apiBaseRevgeocode: 'https://revgeocode.search.hereapi.com/v1/revgeocode',
+    apiBaseMapview: 'https://image.maps.ls.hereapi.com/mia/1.6/mapview',
     apiKey: 'cRw4d8lz-YhlxoryOCZlmiBcjvEHZNJo6tYWbCHjmEw',
   },
 

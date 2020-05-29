@@ -47,12 +47,36 @@ function App() {
   const [weather, setWeather] = React.useState({});
   const [photos, setPhotos] = React.useState({});
 
+  function updateMap(lng, geo) {
+    const mapsView = document.querySelector('.maps-view');
+
+    if (mapsView) {
+      hereService
+        .getMapByGeo(lng, geo)
+        .then((newMapImage) => {
+          const uri = URL.createObjectURL(newMapImage);
+          const newImage = new Image();
+          newImage.src = uri;
+
+          mapsView.style.backgroundImage = `url(${newImage.src})`;
+        })
+        .catch((e) => {
+          window.console.log(e);
+          mapsView.style.backgroundImage = '';
+        });
+    }
+  }
+
   function cbLoading() {
     setLoading(true);
     updateBackground();
   }
 
   function cbLang(value) {
+    if (lang === 'en' || value === 'en') {
+      updateMap(value, coords);
+    }
+
     localStorage.setItem('lang', value);
     setLang(value);
     setPlace(placeFull[value]);
@@ -171,37 +195,13 @@ function App() {
       const newPlace = await getPlaceByGeo(coords);
 
       if (newPlace) {
-        const enCurrent = await weatherbitService.getCurrent(
-          coords,
-          'en',
-          degrees,
-        );
-        const ruCurrent = await weatherbitService.getCurrent(
-          coords,
-          'ru',
-          degrees,
-        );
-        const beCurrent = await weatherbitService.getCurrent(
-          coords,
-          'be',
-          degrees,
-        );
+        const enCurrent = await weatherbitService.getCurrent(coords, 'en');
+        const ruCurrent = await weatherbitService.getCurrent(coords, 'ru');
+        const beCurrent = await weatherbitService.getCurrent(coords, 'be');
 
-        const enForecast = await weatherbitService.getForecast(
-          coords,
-          'en',
-          degrees,
-        );
-        const ruForecast = await weatherbitService.getForecast(
-          coords,
-          'ru',
-          degrees,
-        );
-        const beForecast = await weatherbitService.getForecast(
-          coords,
-          'be',
-          degrees,
-        );
+        const enForecast = await weatherbitService.getForecast(coords, 'en');
+        const ruForecast = await weatherbitService.getForecast(coords, 'ru');
+        const beForecast = await weatherbitService.getForecast(coords, 'be');
 
         if (
           enCurrent &&
@@ -233,6 +233,8 @@ function App() {
           setWeather(newWeather[lang]);
 
           setTimezone(enCurrent.data[0].timezone);
+
+          updateMap(lang, coords);
 
           let season;
           switch (dayTime.month()) {
@@ -359,6 +361,7 @@ function App() {
 
         <div className="app-main">
           <Weather
+            degrees={degrees}
             place={place}
             dtDay={dayTime.format('ddd D MMM')}
             dtTime={dayTime.format('HH:mm:ss')}
@@ -377,6 +380,7 @@ function App() {
 
       <div className="app-footer">
         <Marquee
+          degrees={degrees}
           weather={weather}
           txtWind={txt.wind}
           txtMs={txt.ms}

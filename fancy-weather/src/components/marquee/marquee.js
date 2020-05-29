@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Utils from '../../utils';
+
 import './marquee.css';
 
 function Marquee(props) {
@@ -8,7 +10,15 @@ function Marquee(props) {
       <div key={i} className="marquee-item">
         <span>{`${e.valid_date}:`}</span>
         <span>{e.weather.description}</span>
-        <span>{`${e.min_temp}°-${e.max_temp}°`}</span>
+        <span>{`${
+          props.degrees === 'celcius'
+            ? e.min_temp.toFixed(1)
+            : Utils.toFahrenheit(e.min_temp).toFixed(1)
+        }°-${
+          props.degrees === 'celcius'
+            ? e.max_temp.toFixed(1)
+            : Utils.toFahrenheit(e.max_temp).toFixed(1)
+        }°`}</span>
         <span>{`${props.txtWind} ${e.wind_spd.toFixed(1)} ${
           props.txtMs
         }`}</span>

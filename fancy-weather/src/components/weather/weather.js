@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Utils from '../../utils';
+
 import './weather.css';
 
 function Weather(props) {
@@ -23,7 +25,11 @@ function Weather(props) {
 
       <div className="weather-today">
         <div className="today-left">
-          <span className="left-temp">{current.temp}</span>
+          <span className="left-temp">
+            {props.degrees === 'celcius'
+              ? current.temp.toFixed(1)
+              : Utils.toFahrenheit(current.temp).toFixed(1)}
+          </span>
           <span className="left-degrees">°</span>
         </div>
         <div className="today-right">
@@ -35,7 +41,11 @@ function Weather(props) {
           <div className="today-summary">
             <p className="summary">{current.weather.description}</p>
             <p className="feels">
-              {props.txtFeels}: {current.app_temp}°
+              {props.txtFeels}:{' '}
+              {props.degrees === 'celcius'
+                ? current.app_temp.toFixed(1)
+                : Utils.toFahrenheit(current.app_temp).toFixed(1)}
+              °
             </p>
             <p className="wind">
               {props.txtWind}: {current.wind_spd.toFixed(1)}{' '}
@@ -52,7 +62,12 @@ function Weather(props) {
         <div className="weather-day">
           <h5>{props.dtF1}</h5>
           <div className="day-summary">
-            <span>{forecast1.temp}°</span>
+            <span>
+              {props.degrees === 'celcius'
+                ? forecast1.temp.toFixed(1)
+                : Utils.toFahrenheit(forecast1.temp).toFixed(1)}
+              °
+            </span>
             <img
               className="day-icon"
               src={`../assets/${forecast1.weather.icon}.png`}
@@ -63,7 +78,12 @@ function Weather(props) {
         <div className="weather-day">
           <h5>{props.dtF2}</h5>
           <div className="day-summary">
-            <span>{forecast2.temp}°</span>
+            <span>
+              {props.degrees === 'celcius'
+                ? forecast2.temp.toFixed(1)
+                : Utils.toFahrenheit(forecast2.temp).toFixed(1)}
+              °
+            </span>
             <img
               className="day-icon"
               src={`../assets/${forecast2.weather.icon}.png`}
@@ -74,7 +94,12 @@ function Weather(props) {
         <div className="weather-day">
           <h5>{props.dtF3}</h5>
           <div className="day-summary">
-            <span>{forecast3.temp}°</span>
+            <span>
+              {props.degrees === 'celcius'
+                ? forecast3.temp.toFixed(1)
+                : Utils.toFahrenheit(forecast3.temp).toFixed(1)}
+              °
+            </span>
             <img
               className="day-icon"
               src={`../assets/${forecast3.weather.icon}.png`}

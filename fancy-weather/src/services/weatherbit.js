@@ -6,17 +6,11 @@ export default class WeatherbitService {
     this.apiKeys = data.apiKeys;
   }
 
-  async getCurrent(
-    coords,
-    lang = Utils.initValues.lang,
-    degrees = Utils.initValues.degrees,
-  ) {
-    const units = degrees === 'celcius' ? 'M' : 'F';
-
+  async getCurrent(coords, lang = Utils.initValues.lang) {
     const res = await fetch(
       `${this.apiBase}/current?key=${
         this.apiKeys[Math.round(Math.random())]
-      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
+      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=M`,
     );
 
     if (!res.ok) {
@@ -35,12 +29,10 @@ export default class WeatherbitService {
     lang = Utils.initValues.lang,
     degrees = Utils.initValues.degrees,
   ) {
-    const units = degrees === 'celcius' ? 'M' : 'F';
-
     const res = await fetch(
       `${this.apiBase}/forecast/daily?key=${
         this.apiKeys[Math.round(Math.random())]
-      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=${units}`,
+      }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=M`,
     );
 
     if (!res.ok) {

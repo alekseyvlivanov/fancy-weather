@@ -2,6 +2,7 @@ export default class HereService {
   constructor(data) {
     this.apiBaseGeocode = data.apiBaseGeocode;
     this.apiBaseRevgeocode = data.apiBaseRevgeocode;
+    this.apiBaseMapview = data.apiBaseMapview;
     this.apiKey = data.apiKey;
   }
 
@@ -35,5 +36,23 @@ export default class HereService {
     const json = await res.json();
 
     return json;
+  }
+
+  async getMapByGeo(lang, geo) {
+    const ml = lang === 'en' ? 'eng' : 'rus';
+
+    const res = await fetch(
+      `${this.apiBaseMapview}?apiKey=${this.apiKey}&c=${geo.lat},${geo.lon}&h=400&w=375&ml=${ml}&z=14&nocp`,
+    );
+
+    if (!res.ok) {
+      throw new Error(
+        `Could not get Map for ${geo.lat}, ${geo.lon}. Received ${res.status}`,
+      );
+    }
+
+    const blob = await res.blob();
+
+    return blob;
   }
 }

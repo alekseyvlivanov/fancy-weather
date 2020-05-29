@@ -4,12 +4,13 @@
   justify-content: center;
 }
 
-.maps-google {
+.maps-view {
   height: 400px;
   width: 375px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url(../../assets/moscow.jpg);
   mask-image: url(../../assets/mask.svg);
   mask-position: center;
   mask-repeat: no-repeat;
