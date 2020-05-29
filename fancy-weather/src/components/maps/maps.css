@@ -4,20 +4,6 @@
   justify-content: center;
 }
 
-.maps-view {
-  height: 400px;
-  width: 375px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url(../../assets/moscow.jpg);
-  mask-image: url(../../assets/mask.svg);
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: cover;
-  overflow: hidden;
-}
-
 .maps-coordinates {
   display: flex;
   flex-direction: column;

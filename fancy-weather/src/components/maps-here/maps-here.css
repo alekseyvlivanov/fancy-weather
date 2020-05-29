@@ -1,0 +1,8 @@
+.maps-here {
+  background-image: url(../../assets/europe.jpg);
+  mask-image: url(../../assets/mask.svg);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: cover;
+  overflow: hidden;
+}

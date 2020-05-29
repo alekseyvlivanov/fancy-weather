@@ -3,13 +3,13 @@ export default class HereService {
     this.apiBaseGeocode = data.apiBaseGeocode;
     this.apiBaseRevgeocode = data.apiBaseRevgeocode;
     this.apiBaseMapview = data.apiBaseMapview;
-    this.apiKey = data.apiKey;
+    this.apiKeyREST = data.apiKeyREST;
   }
 
   async getGeoByPlace(lang, place) {
     const res = await fetch(
       encodeURI(
-        `${this.apiBaseGeocode}?apiKey=${this.apiKey}&lang=${lang}&q=${place}`,
+        `${this.apiBaseGeocode}?apiKey=${this.apiKeyREST}&lang=${lang}&q=${place}`,
       ),
     );
 
@@ -24,7 +24,7 @@ export default class HereService {
 
   async getPlaceByGeo(lang, geo) {
     const res = await fetch(
-      `${this.apiBaseRevgeocode}?apiKey=${this.apiKey}&lang=${lang}&at=${geo.lat},${geo.lon}`,
+      `${this.apiBaseRevgeocode}?apiKey=${this.apiKeyREST}&lang=${lang}&at=${geo.lat},${geo.lon}`,
     );
 
     if (!res.ok) {
@@ -42,7 +42,7 @@ export default class HereService {
     const ml = lang === 'en' ? 'eng' : 'rus';
 
     const res = await fetch(
-      `${this.apiBaseMapview}?apiKey=${this.apiKey}&c=${geo.lat},${geo.lon}&h=400&w=375&ml=${ml}&z=14&nocp`,
+      `${this.apiBaseMapview}?apiKey=${this.apiKeyREST}&c=${geo.lat},${geo.lon}&h=400&w=375&ml=${ml}&z=14&nocp`,
     );
 
     if (!res.ok) {

@@ -1,11 +1,18 @@
 import React from 'react';
 
+import MapsHere from '../maps-here';
+
 import './maps.css';
 
 function Maps(props) {
   return (
     <div className="maps-block">
-      <div className="maps-view" />
+      <MapsHere
+        className="maps-here"
+        apiKeyJS={props.apiKeyJS}
+        coords={props.coords}
+        lang={props.lang}
+      />
       <div className="maps-coordinates">
         <p>
           {props.txtLat}: {props.coords.lat}

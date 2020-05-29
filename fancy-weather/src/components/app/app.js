@@ -396,7 +396,13 @@ function App() {
             txtMs={txt.ms}
             txtHum={txt.hum}
           />
-          <Maps txtLat={txt.lat} txtLon={txt.lon} coords={coords} />
+          <Maps
+            txtLat={txt.lat}
+            txtLon={txt.lon}
+            apiKeyJS={APIDATA.Here.apiKeyJS}
+            coords={coords}
+            lang={lang}
+          />
         </div>
       </div>
 
