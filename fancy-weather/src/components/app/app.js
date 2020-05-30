@@ -51,37 +51,12 @@ function App() {
   const [weather, setWeather] = React.useState({});
   const [photos, setPhotos] = React.useState({});
 
-  function updateMap(lng, geo) {
-    const mapsView = document.querySelector('.maps-view');
-
-    if (mapsView) {
-      hereService
-        .getMapByGeo(lng, geo)
-        .then((newMapImage) => {
-          const uri = URL.createObjectURL(newMapImage);
-          const newImage = new Image();
-          newImage.src = uri;
-
-          mapsView.style.backgroundImage = `url(${newImage.src})`;
-        })
-        .catch((e) => {
-          notyf.error(`Couldn't get Map for ${geo.lat}, ${geo.lon}`);
-          window.console.log(e);
-          mapsView.style.backgroundImage = '';
-        });
-    }
-  }
-
   function cbLoading() {
     setLoading(true);
     updateBackground();
   }
 
   function cbLang(value) {
-    if (lang === 'en' || value === 'en') {
-      updateMap(value, coords);
-    }
-
     localStorage.setItem('lang', value);
     setLang(value);
     setPlace(placeFull[value]);
@@ -249,8 +224,6 @@ function App() {
           setWeather(newWeather[lang]);
 
           setTimezone(enCurrent.data[0].timezone);
-
-          updateMap(lang, coords);
 
           let season;
           switch (dayTime.month()) {
