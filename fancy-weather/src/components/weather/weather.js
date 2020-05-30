@@ -35,7 +35,7 @@ function Weather(props) {
         <div className="today-right">
           <img
             className="today-icon"
-            src={`../assets/${current.weather.icon}.png`}
+            src={`../assets/${current.weather.icon}.svg`}
             alt="today icon"
           />
           <div className="today-summary">
@@ -70,7 +70,7 @@ function Weather(props) {
             </span>
             <img
               className="day-icon"
-              src={`../assets/${forecast1.weather.icon}.png`}
+              src={`../assets/${forecast1.weather.icon}.svg`}
               alt="day icon"
             />
           </div>
@@ -86,7 +86,7 @@ function Weather(props) {
             </span>
             <img
               className="day-icon"
-              src={`../assets/${forecast2.weather.icon}.png`}
+              src={`../assets/${forecast2.weather.icon}.svg`}
               alt="day icon"
             />
           </div>
@@ -102,7 +102,7 @@ function Weather(props) {
             </span>
             <img
               className="day-icon"
-              src={`../assets/${forecast3.weather.icon}.png`}
+              src={`../assets/${forecast3.weather.icon}.svg`}
               alt="day icon"
             />
           </div>

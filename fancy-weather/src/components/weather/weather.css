@@ -57,12 +57,17 @@
 .today-right {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-around;
 }
 
 .today-icon {
   height: 120px;
   width: 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: scale(2);
 }
 
 .today-summary {
