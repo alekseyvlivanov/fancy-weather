@@ -6,3 +6,10 @@
   mask-size: cover;
   overflow: hidden;
 }
+
+@media (max-width: 425px) {
+  .maps-here {
+    height: 95vw;
+    width: 90vw;
+  }
+}
