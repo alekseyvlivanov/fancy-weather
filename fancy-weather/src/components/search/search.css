@@ -36,6 +36,14 @@
   cursor: pointer;
 }
 
+.search-voice:hover path {
+  fill-opacity: 0.7;
+}
+
+.search-voice.listening path {
+  fill-opacity: 1;
+}
+
 .search-submit {
   height: 44px;
   width: 101px;

@@ -5,6 +5,8 @@
 }
 
 .city-country {
+  display: flex;
+  flex-wrap: wrap;
   font-size: 4.4rem;
   font-weight: bold;
   line-height: 5.4rem;
@@ -39,17 +41,17 @@
 
 .today-left {
   display: flex;
-  margin-right: 2rem;
+  margin-right: 3rem;
 }
 
 .left-temp {
-  font-size: 20rem;
+  font-size: 18rem;
   font-weight: bold;
   line-height: 1;
 }
 
 .left-degrees {
-  font-size: 8rem;
+  font-size: 6rem;
   font-weight: bold;
   line-height: 1;
 }
@@ -67,7 +69,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  transform: scale(2);
+  transform: scale(2.2);
 }
 
 .today-summary {
@@ -102,6 +104,7 @@
 
 .day-summary {
   display: flex;
+  margin-top: 0.5rem;
 }
 
 .day-summary span {
@@ -111,24 +114,16 @@
 }
 
 .day-icon {
-  height: 50px;
-  width: 50px;
-  margin-left: 1rem;
+  height: 54px;
+  width: 54px;
 }
 
 @media (max-width: 1024px) {
   .weather-title {
     text-align: center;
   }
-}
-
-@media (max-width: 425px) {
-  .weather-block {
-    width: unset;
-  }
 
   .city-country {
-    display: flex;
     flex-direction: column;
     font-size: 3.2rem;
     line-height: 3.6rem;
@@ -140,6 +135,12 @@
 
   .city::after {
     content: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .weather-block {
+    width: unset;
   }
 
   .weather-today {

@@ -99,6 +99,10 @@
   outline: none;
 }
 
+.control-degrees label:hover {
+  background: rgba(180, 184, 187, 0.8);
+}
+
 .control-degrees label.fahrenheit {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;

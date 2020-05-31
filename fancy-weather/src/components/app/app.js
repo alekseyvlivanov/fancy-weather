@@ -155,7 +155,7 @@ function App() {
     clearInterval(dayTimeInterval);
     setDayTime(
       dayjs(
-        new Date().toLocaleString('en-US', {
+        new Date().toLocaleString(Utils.CONSTANTS.langs.en, {
           timeZone: timezone,
         }),
       ).locale(value),
@@ -164,7 +164,7 @@ function App() {
       setInterval(() => {
         setDayTime(
           dayjs(
-            new Date().toLocaleString('en-US', {
+            new Date().toLocaleString(Utils.CONSTANTS.langs.en, {
               timeZone: timezone,
             }),
           ).locale(value),
@@ -347,9 +347,24 @@ function App() {
             cbDegrees={cbDegrees}
           />
           <Search
+            degrees={degrees}
+            place={place}
+            dtF1={dayTime.add(1, 'day').format('dddd')}
+            dtF2={dayTime.add(2, 'day').format('dddd')}
+            dtF3={dayTime.add(3, 'day').format('dddd')}
+            weather={weather}
+            txtFeels={txt.feels}
+            txtWind={txt.wind}
+            txtMs={
+              lang === Utils.CONSTANTS.langs.en
+                ? 'meters per second'
+                : 'метров в секунду'
+            }
+            txtHum={txt.hum}
             txtInput={txt.input}
             txtVoice={txt.voice}
             txtSearch={txt.search}
+            lang={lang}
             cbSearch={cbSearch}
           />
         </div>

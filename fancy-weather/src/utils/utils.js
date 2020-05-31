@@ -1,6 +1,18 @@
+const CONSTANTS = {
+  langs: {
+    en: 'en',
+    ru: 'ru',
+    be: 'be',
+  },
+  degrees: {
+    celcius: 'celcius',
+    fahrenheit: 'fahrenheit',
+  },
+};
+
 const initValues = {
-  lang: localStorage.getItem('lang') || 'en',
-  degrees: localStorage.getItem('degrees') || 'celcius',
+  lang: localStorage.getItem('lang') || CONSTANTS.langs.en,
+  degrees: localStorage.getItem('degrees') || CONSTANTS.degrees.celcius,
   coords: { lat: 43.1056, lon: 131.874 },
   timezone: 'Asia/Vladivostok',
   txt: {
@@ -43,6 +55,24 @@ const initValues = {
   },
 };
 
+const voiceActions = {
+  weather: 'weather',
+  forecast: 'forecast',
+  louder: 'louder',
+  quieter: 'quieter',
+};
+
+const voiceCommands = {
+  weather: voiceActions.weather,
+  погода: voiceActions.weather,
+  forecast: voiceActions.forecast,
+  прогноз: voiceActions.forecast,
+  louder: voiceActions.louder,
+  громче: voiceActions.louder,
+  quieter: voiceActions.quieter,
+  тише: voiceActions.quieter,
+};
+
 function consoleInfo() {
   window.console.group();
   window.console.info('Уважаемый проверяющий!');
@@ -64,6 +94,12 @@ function consoleInfo() {
   window.console.info(
     'Во время выполнения любых асинхронных запросов (крутится спиннер) кнопка обновления фона не блокируется. Это осознанное решение. Если протыкать туда несколько раз подряд - приложение постарается последовательно обновить фон столько же раз.',
   );
+  window.console.info(
+    'Голосовой поиск все еще находится в экспериментальном статусе и не поддерживает Белорусский язык.',
+  );
+  window.console.info(
+    'Распознаваемые команды: при активном Английском интерфейсе - weather, forecast, louder, quieter; при Русском и Белорусском - погода, прогноз, громче, тише. Все остальные фразы расцениваются как населенный пункт.',
+  );
   window.console.groupEnd();
 }
 
@@ -75,4 +111,12 @@ function toFahrenheit(celsius) {
   return (celsius * 9) / 5 + 32;
 }
 
-export default { initValues, consoleInfo, toCelsius, toFahrenheit };
+export default {
+  CONSTANTS,
+  initValues,
+  voiceActions,
+  voiceCommands,
+  consoleInfo,
+  toCelsius,
+  toFahrenheit,
+};
