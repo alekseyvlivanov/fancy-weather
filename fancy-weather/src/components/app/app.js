@@ -230,22 +230,22 @@ function App() {
             case 0:
             case 1:
             case 11:
-              season = 'winter';
+              season = coords.lat > 0 ? 'winter' : 'summer';
               break;
             case 2:
             case 3:
             case 4:
-              season = 'spring';
+              season = coords.lat > 0 ? 'spring' : 'autumn';
               break;
             case 5:
             case 6:
             case 7:
-              season = 'summer';
+              season = coords.lat > 0 ? 'summer' : 'winter';
               break;
             case 8:
             case 9:
             case 10:
-              season = 'autumn';
+              season = coords.lat > 0 ? 'autumn' : 'winter';
               break;
             default:
               season = 'year';
@@ -289,6 +289,7 @@ function App() {
               pod = 'day';
           }
 
+          window.console.log(`Pixabay search: '${season} ${pod}'`);
           const newPhotos = await pixabayService.getPhotos(`${season} ${pod}`);
           setPhotos(newPhotos);
         }
