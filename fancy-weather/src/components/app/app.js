@@ -70,6 +70,90 @@ function App() {
     setDegrees(value);
   }
 
+  function cbSpeak() {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      return;
+    }
+
+    const current = weather.current.data[0];
+    const forecast = [
+      { dt: dayTime.add(1, 'day').format('dddd'), f: weather.forecast.data[1] },
+      { dt: dayTime.add(2, 'day').format('dddd'), f: weather.forecast.data[2] },
+      { dt: dayTime.add(3, 'day').format('dddd'), f: weather.forecast.data[3] },
+    ];
+    const speakLang =
+      lang === Utils.CONSTANTS.langs.en ? lang : Utils.CONSTANTS.langs.ru;
+
+    const txtCurrentWeather = `
+    ${place.city} ${place.country}.
+    ${
+      lang === Utils.CONSTANTS.langs.en ? 'Current weather' : 'Текущая погода'
+    }: ${
+      degrees === 'celcius'
+        ? current.temp.toLocaleString(speakLang, {
+            maximumFractionDigits: 1,
+          })
+        : Utils.toFahrenheit(current.temp).toLocaleString(speakLang, {
+            maximumFractionDigits: 1,
+          })
+    }°.
+    ${current.weather.description}.
+    ${txt.feels}: ${
+      degrees === 'celcius'
+        ? current.app_temp.toLocaleString(speakLang, {
+            maximumFractionDigits: 1,
+          })
+        : Utils.toFahrenheit(current.app_temp).toLocaleString(speakLang, {
+            maximumFractionDigits: 1,
+          })
+    }°.
+    ${txt.wind}: ${current.wind_spd.toLocaleString(speakLang, {
+      maximumFractionDigits: 1,
+    })} ${
+      lang === Utils.CONSTANTS.langs.en
+        ? 'meters per second'
+        : 'метров в секунду'
+    }.
+    ${txt.hum}: ${current.rh}%.
+    `;
+
+    const txtForecastWeather = `
+    ${
+      lang === Utils.CONSTANTS.langs.en ? 'Forecast weather' : 'Прогноз погоды'
+    }.
+    ${forecast
+      .map((dtF) => {
+        return `
+      ${dtF.dt}.
+      ${
+        degrees === 'celcius'
+          ? dtF.f.temp.toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+          : Utils.toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+      }°.
+      ${dtF.f.weather.description}.
+      `;
+      })
+      .join('')}
+    `;
+
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.lang =
+      lang === Utils.CONSTANTS.langs.en ? lang : Utils.CONSTANTS.langs.ru;
+
+    utterance.text = txtCurrentWeather;
+    window.console.log(txtCurrentWeather);
+    speechSynthesis.speak(utterance);
+
+    utterance.text = txtForecastWeather;
+    window.console.log(txtForecastWeather);
+    speechSynthesis.speak(utterance);
+  }
+
   function cbSearch(value) {
     const term = value.trim();
     if (term.length > 0) {
@@ -340,12 +424,14 @@ function App() {
         <div className="app-header">
           <Control
             txtRefresh={txt.refresh}
+            txtSpeak={txt.speak}
             loading={loading}
             cbLoading={cbLoading}
             lang={lang}
             cbLang={cbLang}
             degrees={degrees}
             cbDegrees={cbDegrees}
+            cbSpeak={cbSpeak}
           />
           <Search
             degrees={degrees}

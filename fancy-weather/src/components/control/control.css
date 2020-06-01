@@ -38,7 +38,7 @@
 
 .control-lang {
   height: 44px;
-  width: 71px;
+  width: 64px;
   margin-right: 1rem;
 }
 
@@ -78,6 +78,7 @@
   width: 88px;
   font-size: 1.4rem;
   line-height: 1;
+  margin-right: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -122,6 +123,20 @@
   border: none;
   color: #ffffff;
   cursor: unset;
+}
+
+.control-audio {
+  height: 44px;
+  width: 44px;
+  background: rgba(180, 184, 187, 0.4);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.control-audio:hover {
+  background: rgba(180, 184, 187, 0.8);
 }
 
 @media (max-width: 1024px) {

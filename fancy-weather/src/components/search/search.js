@@ -110,6 +110,10 @@ function Search(props) {
       const commands = Object.keys(Utils.voiceCommands);
       const transcript = e.results[e.resultIndex][0].transcript;
       const term = transcript.trim().toLowerCase();
+      const speakLang =
+        props.lang === Utils.CONSTANTS.langs.en
+          ? props.lang
+          : Utils.CONSTANTS.langs.ru;
 
       if (commands.includes(term)) {
         switch (Utils.voiceCommands[term]) {
@@ -130,25 +134,24 @@ function Search(props) {
                   : 'Текущая погода'
               }: ${
                 props.degrees === 'celcius'
-                  ? current.temp.toLocaleString(props.lang, {
+                  ? current.temp.toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
                     })
-                  : Utils.toFahrenheit(current.temp).toLocaleString(
-                      props.lang,
-                      { maximumFractionDigits: 1 },
-                    )
+                  : Utils.toFahrenheit(current.temp).toLocaleString(speakLang, {
+                      maximumFractionDigits: 1,
+                    })
               }°.
               ${current.weather.description}.
               ${props.txtFeels}: ${
                 props.degrees === 'celcius'
-                  ? current.app_temp.toLocaleString(props.lang, {
+                  ? current.app_temp.toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
                     })
                   : Utils.toFahrenheit(
                       current.app_temp,
-                    ).toLocaleString(props.lang, { maximumFractionDigits: 1 })
+                    ).toLocaleString(speakLang, { maximumFractionDigits: 1 })
               }°.
-              ${props.txtWind}: ${current.wind_spd.toLocaleString(props.lang, {
+              ${props.txtWind}: ${current.wind_spd.toLocaleString(speakLang, {
                 maximumFractionDigits: 1,
               })} ${props.txtMs}.
               ${props.txtHum}: ${current.rh}%.
@@ -169,13 +172,12 @@ function Search(props) {
                 ${dtF.dt}.
                 ${
                   props.degrees === 'celcius'
-                    ? dtF.f.temp.toLocaleString(props.lang, {
+                    ? dtF.f.temp.toLocaleString(speakLang, {
                         maximumFractionDigits: 1,
                       })
-                    : Utils.toFahrenheit(dtF.f.temp).toLocaleString(
-                        props.lang,
-                        { maximumFractionDigits: 1 },
-                      )
+                    : Utils.toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
+                        maximumFractionDigits: 1,
+                      })
                 }°.
                 ${dtF.f.weather.description}.
                 `;
