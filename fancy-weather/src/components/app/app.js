@@ -415,6 +415,8 @@ function App() {
           : Utils.initValues.coords,
       );
     });
+
+    notyf.success("Don't forget to check the Chrome DevTools console");
   }
   React.useEffect(initApp, []);
 
