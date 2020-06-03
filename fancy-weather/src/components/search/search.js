@@ -1,26 +1,49 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import 'notyf/notyf.min.css';
 import NotyfContext from '../../notyf-context';
 
-import Utils from '../../utils';
+import {
+  CONSTANTS,
+  voiceActions,
+  voiceCommands,
+  toFahrenheit,
+} from '../../utils';
 
 import './search.css';
 
 function Search(props) {
-  const notyf = React.useContext(NotyfContext);
+  const {
+    degrees,
+    dtF1,
+    dtF2,
+    dtF3,
+    lang,
+    place,
+    handleSearch,
+    weather,
+    txtFeels,
+    txtHum,
+    txtInput,
+    txtMs,
+    txtSearch,
+    txtWind,
+    txtVoice,
+  } = props;
 
-  const [input, setInput] = React.useState('');
-  const [listening, setListening] = React.useState(false);
-  const [recognition, setRecognition] = React.useState(null);
-  const [speaking, setSpeaking] = React.useState(false);
-  const [utterance, setUtterance] = React.useState(null);
-  const [volume, setVolume] = React.useState(5);
+  const notyf = useContext(NotyfContext);
 
-  const current = props.weather.current.data[0];
+  const [input, setInput] = useState('');
+  const [listening, setListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+  const [speaking, setSpeaking] = useState(false);
+  const [utterance, setUtterance] = useState(null);
+  const [volume, setVolume] = useState(5);
+
+  const current = weather.current.data[0];
   const forecast = [
-    { dt: props.dtF1, f: props.weather.forecast.data[1] },
-    { dt: props.dtF2, f: props.weather.forecast.data[2] },
-    { dt: props.dtF3, f: props.weather.forecast.data[3] },
+    { dt: dtF1, f: weather.forecast.data[1] },
+    { dt: dtF2, f: weather.forecast.data[2] },
+    { dt: dtF3, f: weather.forecast.data[3] },
   ];
 
   function cbInput(e) {
@@ -29,7 +52,7 @@ function Search(props) {
 
   function onSubmit(e) {
     e.preventDefault();
-    props.cbSearch(input);
+    handleSearch(input);
   }
 
   function handleVoiceClick(e) {
@@ -56,21 +79,21 @@ function Search(props) {
       }
     }
   }
-  React.useEffect(updateListening, [listening]);
+  useEffect(updateListening, [listening]);
 
   function updateVolume() {
     if (recognition && listening) {
       notyf.success(`Volume is ${volume / 10}`);
     }
   }
-  React.useEffect(updateVolume, [volume]);
+  useEffect(updateVolume, [volume]);
 
   function updateSpeaking() {
     if (utterance && !speaking) {
       speechSynthesis.cancel();
     }
   }
-  React.useEffect(updateSpeaking, [speaking]);
+  useEffect(updateSpeaking, [speaking]);
 
   function speak() {
     if (utterance) {
@@ -78,7 +101,7 @@ function Search(props) {
       speechSynthesis.speak(utterance);
     }
   }
-  React.useEffect(speak, [utterance]);
+  useEffect(speak, [utterance]);
 
   function initRecognition() {
     const SpeechRecognition =
@@ -96,7 +119,7 @@ function Search(props) {
 
     newRecognition.continuous = true;
     newRecognition.interimResults = false;
-    newRecognition.lang = props.lang;
+    newRecognition.lang = lang;
 
     newRecognition.onstart = function () {
       setListening(true);
@@ -107,62 +130,57 @@ function Search(props) {
     };
 
     newRecognition.onresult = function (e) {
-      const commands = Object.keys(Utils.voiceCommands);
+      const commands = Object.keys(voiceCommands);
       const transcript = e.results[e.resultIndex][0].transcript;
       const term = transcript.trim().toLowerCase();
-      const speakLang =
-        props.lang === Utils.CONSTANTS.langs.en
-          ? props.lang
-          : Utils.CONSTANTS.langs.ru;
+      const speakLang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
 
       if (commands.includes(term)) {
-        switch (Utils.voiceCommands[term]) {
-          case Utils.voiceActions.weather:
-          case Utils.voiceActions.forecast:
+        switch (voiceCommands[term]) {
+          case voiceActions.weather:
+          case voiceActions.forecast:
             if (utterance && speaking) {
               setSpeaking(false);
             }
 
             let txtWeather;
 
-            if (Utils.voiceCommands[term] === Utils.voiceActions.weather) {
+            if (voiceCommands[term] === voiceActions.weather) {
               txtWeather = `
-              ${props.place.city} ${props.place.country}.
+              ${place.city} ${place.country}.
               ${
-                props.lang === Utils.CONSTANTS.langs.en
+                lang === CONSTANTS.langs.en
                   ? 'Current weather'
                   : 'Текущая погода'
               }: ${
-                props.degrees === 'celcius'
+                degrees === 'celcius'
                   ? current.temp.toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
                     })
-                  : Utils.toFahrenheit(current.temp).toLocaleString(speakLang, {
+                  : toFahrenheit(current.temp).toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
                     })
               }°.
               ${current.weather.description}.
-              ${props.txtFeels}: ${
-                props.degrees === 'celcius'
+              ${txtFeels}: ${
+                degrees === 'celcius'
                   ? current.app_temp.toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
                     })
-                  : Utils.toFahrenheit(
-                      current.app_temp,
-                    ).toLocaleString(speakLang, { maximumFractionDigits: 1 })
+                  : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
+                      maximumFractionDigits: 1,
+                    })
               }°.
-              ${props.txtWind}: ${current.wind_spd.toLocaleString(speakLang, {
+              ${txtWind}: ${current.wind_spd.toLocaleString(speakLang, {
                 maximumFractionDigits: 1,
-              })} ${props.txtMs}.
-              ${props.txtHum}: ${current.rh}%.
+              })} ${txtMs}.
+              ${txtHum}: ${current.rh}%.
               `;
-            } else if (
-              Utils.voiceCommands[term] === Utils.voiceActions.forecast
-            ) {
+            } else if (voiceCommands[term] === voiceActions.forecast) {
               txtWeather = `
-              ${props.place.city} ${props.place.country}.
+              ${place.city} ${place.country}.
               ${
-                props.lang === Utils.CONSTANTS.langs.en
+                lang === CONSTANTS.langs.en
                   ? 'Forecast weather'
                   : 'Прогноз погоды'
               }.
@@ -171,11 +189,11 @@ function Search(props) {
                   return `
                 ${dtF.dt}.
                 ${
-                  props.degrees === 'celcius'
+                  degrees === 'celcius'
                     ? dtF.f.temp.toLocaleString(speakLang, {
                         maximumFractionDigits: 1,
                       })
-                    : Utils.toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
+                    : toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
                         maximumFractionDigits: 1,
                       })
                 }°.
@@ -191,9 +209,7 @@ function Search(props) {
 
             const newUtterance = new SpeechSynthesisUtterance();
             newUtterance.lang =
-              props.lang === Utils.CONSTANTS.langs.en
-                ? props.lang
-                : Utils.CONSTANTS.langs.ru;
+              lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
             newUtterance.volume = volume / 10;
             newUtterance.text = txtWeather;
 
@@ -201,10 +217,10 @@ function Search(props) {
             setUtterance(newUtterance);
 
             break;
-          case Utils.voiceActions.louder:
+          case voiceActions.louder:
             setVolume((prevVolume) => Math.min(prevVolume + 1, 10));
             break;
-          case Utils.voiceActions.quieter:
+          case voiceActions.quieter:
             setVolume((prevVolume) => Math.max(prevVolume - 1, 0));
             break;
           default:
@@ -212,21 +228,21 @@ function Search(props) {
         }
       } else {
         setInput(transcript);
-        props.cbSearch(transcript);
+        handleSearch(transcript);
       }
     };
 
     setRecognition(newRecognition);
   }
-  React.useEffect(initRecognition, [
-    props.degrees,
-    props.place,
-    props.weather,
-    props.txtFeels,
-    props.txtWind,
-    props.txtMs,
-    props.txtHum,
-    props.lang,
+  useEffect(initRecognition, [
+    degrees,
+    place,
+    weather,
+    txtFeels,
+    txtWind,
+    txtMs,
+    txtHum,
+    lang,
   ]);
 
   return (
@@ -234,7 +250,7 @@ function Search(props) {
       <input
         className="search-input"
         type="text"
-        placeholder={props.txtInput}
+        placeholder={txtInput}
         value={input}
         onChange={cbInput}
       />
@@ -253,11 +269,11 @@ function Search(props) {
           fill="white"
           fillOpacity="0.4"
         />
-        <title>{props.txtVoice}</title>
+        <title>{txtVoice}</title>
       </svg>
 
       <button className="search-submit" type="submit">
-        {props.txtSearch}
+        {txtSearch}
       </button>
     </form>
   );

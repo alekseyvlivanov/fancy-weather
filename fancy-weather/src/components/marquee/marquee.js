@@ -1,28 +1,28 @@
 import React from 'react';
 
-import Utils from '../../utils';
+import { toFahrenheit } from '../../utils';
 
 import './marquee.css';
 
 function Marquee(props) {
-  const items = props.weather.forecast.data.map((e, i) => {
+  const { degrees, weather, txtHum, txtMs, txtWind } = props;
+
+  const items = weather.forecast.data.map((dayForecast, idx) => {
     return (
-      <div key={i} className="marquee-item">
-        <span>{`${e.valid_date}:`}</span>
-        <span>{e.weather.description}</span>
+      <div key={idx} className="marquee-item">
+        <span>{`${dayForecast.valid_date}:`}</span>
+        <span>{dayForecast.weather.description}</span>
         <span>{`${
-          props.degrees === 'celcius'
-            ? e.min_temp.toFixed(1)
-            : Utils.toFahrenheit(e.min_temp).toFixed(1)
+          degrees === 'celcius'
+            ? dayForecast.min_temp.toFixed(1)
+            : toFahrenheit(dayForecast.min_temp).toFixed(1)
         }°-${
-          props.degrees === 'celcius'
-            ? e.max_temp.toFixed(1)
-            : Utils.toFahrenheit(e.max_temp).toFixed(1)
+          degrees === 'celcius'
+            ? dayForecast.max_temp.toFixed(1)
+            : toFahrenheit(dayForecast.max_temp).toFixed(1)
         }°`}</span>
-        <span>{`${props.txtWind} ${e.wind_spd.toFixed(1)} ${
-          props.txtMs
-        }`}</span>
-        <span>{`${props.txtHum} ${e.rh}%`}</span>
+        <span>{`${txtWind} ${dayForecast.wind_spd.toFixed(1)} ${txtMs}`}</span>
+        <span>{`${txtHum} ${dayForecast.rh}%`}</span>
       </div>
     );
   });

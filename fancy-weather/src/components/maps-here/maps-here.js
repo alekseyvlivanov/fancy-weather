@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 
 import './maps-here.css';
 
 function MapsHere(props) {
-  const mapRef = React.useRef(null);
+  const { apiKeyJS, lang, coords } = props;
 
-  React.useLayoutEffect(() => {
+  const mapRef = useRef(null);
+
+  useLayoutEffect(() => {
     if (!mapRef.current) return;
 
     const H = window.H;
     const platform = new H.service.Platform({
-      apikey: props.apiKeyJS,
+      apikey: apiKeyJS,
     });
-    const defaultLayers = platform.createDefaultLayers({ lg: props.lang });
+    const defaultLayers = platform.createDefaultLayers({ lg: lang });
     const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-      center: { lat: props.coords.lat, lng: props.coords.lon },
+      center: { lat: coords.lat, lng: coords.lon },
       pixelRatio: window.devicePixelRatio || 1,
       zoom: 14,
     });
@@ -28,16 +30,13 @@ function MapsHere(props) {
     </svg>`);
 
     hMap.addObject(
-      new H.map.Marker(
-        { lat: props.coords.lat, lng: props.coords.lon },
-        { icon: marker },
-      ),
+      new H.map.Marker({ lat: coords.lat, lng: coords.lon }, { icon: marker }),
     );
 
     return () => {
       hMap.dispose();
     };
-  }, [mapRef, props.apiKeyJS, props.coords, props.lang]);
+  }, [mapRef, apiKeyJS, coords, lang]);
 
   return (
     <div

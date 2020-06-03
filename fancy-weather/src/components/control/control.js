@@ -1,23 +1,34 @@
 import React from 'react';
 
 import refresh from '../../assets/refresh.svg';
-// import audio from '../../assets/audio.svg';
 
 import './control.css';
 
 function Control(props) {
+  const {
+    degrees,
+    handleDegrees,
+    lang,
+    handleLang,
+    loading,
+    handleLoading,
+    handleSpeak,
+    txtRefresh,
+    txtSpeak,
+  } = props;
+
   return (
     <div className="control-block">
       <button
         className="control-refresh"
-        title={props.txtRefresh}
-        onClick={() => props.cbLoading()}
+        title={txtRefresh}
+        onClick={() => handleLoading()}
       >
         <img
           src={refresh}
           alt="Refresh background"
           style={{
-            animation: props.loading ? 'refresh 1.5s linear infinite' : '',
+            animation: loading ? 'refresh 1.5s linear infinite' : '',
           }}
         />
       </button>
@@ -25,8 +36,8 @@ function Control(props) {
       <div className="control-lang">
         <select
           name="lang"
-          value={props.lang}
-          onChange={(e) => props.cbLang(e.target.value)}
+          value={lang}
+          onChange={(e) => handleLang(e.target.value)}
         >
           <option value="en">EN</option>
           <option value="ru">RU</option>
@@ -40,8 +51,8 @@ function Control(props) {
           name="degrees"
           id="fahrenheit"
           value="fahrenheit"
-          checked={props.degrees === 'fahrenheit'}
-          onChange={(e) => props.cbDegrees(e.target.value)}
+          checked={degrees === 'fahrenheit'}
+          onChange={(e) => handleDegrees(e.target.value)}
         />
         <label className="fahrenheit" htmlFor="fahrenheit">
           °F
@@ -51,8 +62,8 @@ function Control(props) {
           name="degrees"
           id="celcius"
           value="celcius"
-          checked={props.degrees === 'celcius'}
-          onChange={(e) => props.cbDegrees(e.target.value)}
+          checked={degrees === 'celcius'}
+          onChange={(e) => handleDegrees(e.target.value)}
         />
         <label className="celsius" htmlFor="celcius">
           °C
@@ -61,8 +72,8 @@ function Control(props) {
 
       <button
         className="control-audio"
-        title={props.txtSpeak}
-        onClick={props.cbSpeak}
+        title={txtSpeak}
+        onClick={() => handleSpeak()}
       >
         <svg
           width="16"

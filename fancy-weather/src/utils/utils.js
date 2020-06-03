@@ -120,7 +120,77 @@ function toFahrenheit(celsius) {
   return (celsius * 9) / 5 + 32;
 }
 
-export default {
+function getSeason(dayTime, coords) {
+  let season;
+  switch (dayTime.month()) {
+    case 0:
+    case 1:
+    case 11:
+      season = coords.lat > 0 ? 'winter' : 'summer';
+      break;
+    case 2:
+    case 3:
+    case 4:
+      season = coords.lat > 0 ? 'spring' : 'autumn';
+      break;
+    case 5:
+    case 6:
+    case 7:
+      season = coords.lat > 0 ? 'summer' : 'winter';
+      break;
+    case 8:
+    case 9:
+    case 10:
+      season = coords.lat > 0 ? 'autumn' : 'winter';
+      break;
+    default:
+      season = 'year';
+  }
+  return season;
+}
+
+function getPartOfDay(dayTime) {
+  let partOfDay;
+  switch (dayTime.hour()) {
+    case 22:
+    case 23:
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      partOfDay = 'night';
+      break;
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+      partOfDay = 'morning';
+      break;
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+      partOfDay = 'afternoon';
+      break;
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+      partOfDay = 'evening';
+      break;
+    default:
+      partOfDay = 'day';
+  }
+  return partOfDay;
+}
+
+export {
   CONSTANTS,
   initValues,
   voiceActions,
@@ -128,4 +198,6 @@ export default {
   consoleInfo,
   toCelsius,
   toFahrenheit,
+  getSeason,
+  getPartOfDay,
 };

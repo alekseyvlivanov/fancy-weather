@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import GeoIPLookupService from './geoiplookup';
-
-const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
+import geoIPLookupService from './index';
 
 describe('GeoIPLookup', () => {
   it('should return correct Geo data for IP', async () => {

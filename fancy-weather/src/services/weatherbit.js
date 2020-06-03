@@ -1,4 +1,4 @@
-import Utils from '../utils';
+import { initValues } from '../utils';
 
 export default class WeatherbitService {
   constructor(data) {
@@ -6,7 +6,7 @@ export default class WeatherbitService {
     this.apiKeys = data.apiKeys;
   }
 
-  async getCurrent(coords, lang = Utils.initValues.lang) {
+  async getCurrent(coords, lang = initValues.lang) {
     const res = await fetch(
       `${this.apiBase}/current?key=${
         this.apiKeys[Math.round(Math.random())]
@@ -26,8 +26,8 @@ export default class WeatherbitService {
 
   async getForecast(
     coords,
-    lang = Utils.initValues.lang,
-    degrees = Utils.initValues.degrees,
+    lang = initValues.lang,
+    degrees = initValues.degrees,
   ) {
     const res = await fetch(
       `${this.apiBase}/forecast/daily?key=${

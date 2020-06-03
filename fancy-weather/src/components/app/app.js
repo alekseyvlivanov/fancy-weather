@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/be';
@@ -11,66 +11,68 @@ import Weather from '../weather';
 import Maps from '../maps';
 import Marquee from '../marquee';
 
-import Utils from '../../utils';
+import {
+  CONSTANTS,
+  initValues,
+  consoleInfo,
+  toFahrenheit,
+  getSeason,
+  getPartOfDay,
+} from '../../utils';
 
 import pixabay from '../../assets/pixabay.svg';
 
 import './app.css';
 
-import APIDATA from '../../services/api-data';
-import CloudflareService from '../../services/cloudflare';
-import GeoIPLookupService from '../../services/geoiplookup';
-import HereService from '../../services/here';
-import PixabayService from '../../services/pixabay';
-import WeatherbitService from '../../services/weatherbit';
-import YandexService from '../../services/yandex';
+import {
+  apiKeyJS,
+  cloudflareService,
+  geoIPLookupService,
+  hereService,
+  pixabayService,
+  weatherbitService,
+  yandexService,
+} from '../../services';
 
 function App() {
-  const notyf = React.useContext(NotyfContext);
+  const notyf = useContext(NotyfContext);
 
-  const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
-  const geoIPLookupService = new GeoIPLookupService(APIDATA.GeoIPLookup);
-  const hereService = new HereService(APIDATA.Here);
-  const pixabayService = new PixabayService(APIDATA.Pixabay);
-  const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
-  const yandexService = new YandexService(APIDATA.Yandex);
+  const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState(initValues.lang);
+  const [degrees, setDegrees] = useState(initValues.degrees);
+  const [timezone, setTimezone] = useState(initValues.timezone);
+  const [txt, setTxt] = useState(initValues.txt[lang]);
 
-  const [loading, setLoading] = React.useState(true);
-  const [lang, setLang] = React.useState(Utils.initValues.lang);
-  const [degrees, setDegrees] = React.useState(Utils.initValues.degrees);
-  const [timezone, setTimezone] = React.useState(Utils.initValues.timezone);
-  const [txt, setTxt] = React.useState(Utils.initValues.txt[lang]);
+  const [dayTime, setDayTime] = useState(dayjs().locale(lang));
+  const [dayTimeInterval, setDayTimeInterval] = useState(null);
 
-  const [dayTime, setDayTime] = React.useState(dayjs().locale(lang));
-  const [dayTimeInterval, setDayTimeInterval] = React.useState(null);
+  const [coords, setCoords] = useState({});
+  const [placeFull, setPlaceFull] = useState({});
+  const [place, setPlace] = useState({});
+  const [weatherFull, setWeatherFull] = useState({});
+  const [weather, setWeather] = useState({});
+  const [photos, setPhotos] = useState({});
 
-  const [coords, setCoords] = React.useState({});
-  const [placeFull, setPlaceFull] = React.useState({});
-  const [place, setPlace] = React.useState({});
-  const [weatherFull, setWeatherFull] = React.useState({});
-  const [weather, setWeather] = React.useState({});
-  const [photos, setPhotos] = React.useState({});
-
-  function cbLoading() {
+  function handleLoading() {
     setLoading(true);
     updateBackground();
   }
 
-  function cbLang(value) {
+  function handleLang(value) {
     localStorage.setItem('lang', value);
     setLang(value);
     setPlace(placeFull[value]);
     updateTimer(value);
     setWeather(weatherFull[value]);
-    setTxt(Utils.initValues.txt[value]);
+    setTxt(initValues.txt[value]);
   }
 
-  function cbDegrees(value) {
+  function handleDegrees(value) {
     localStorage.setItem('degrees', value);
     setDegrees(value);
   }
 
-  function cbSpeak() {
+  function handleSpeak() {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
       return;
@@ -82,19 +84,16 @@ function App() {
       { dt: dayTime.add(2, 'day').format('dddd'), f: weather.forecast.data[2] },
       { dt: dayTime.add(3, 'day').format('dddd'), f: weather.forecast.data[3] },
     ];
-    const speakLang =
-      lang === Utils.CONSTANTS.langs.en ? lang : Utils.CONSTANTS.langs.ru;
+    const speakLang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
 
     const txtCurrentWeather = `
     ${place.city} ${place.country}.
-    ${
-      lang === Utils.CONSTANTS.langs.en ? 'Current weather' : 'Текущая погода'
-    }: ${
+    ${lang === CONSTANTS.langs.en ? 'Current weather' : 'Текущая погода'}: ${
       degrees === 'celcius'
         ? current.temp.toLocaleString(speakLang, {
             maximumFractionDigits: 1,
           })
-        : Utils.toFahrenheit(current.temp).toLocaleString(speakLang, {
+        : toFahrenheit(current.temp).toLocaleString(speakLang, {
             maximumFractionDigits: 1,
           })
     }°.
@@ -104,24 +103,20 @@ function App() {
         ? current.app_temp.toLocaleString(speakLang, {
             maximumFractionDigits: 1,
           })
-        : Utils.toFahrenheit(current.app_temp).toLocaleString(speakLang, {
+        : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
             maximumFractionDigits: 1,
           })
     }°.
     ${txt.wind}: ${current.wind_spd.toLocaleString(speakLang, {
       maximumFractionDigits: 1,
     })} ${
-      lang === Utils.CONSTANTS.langs.en
-        ? 'meters per second'
-        : 'метров в секунду'
+      lang === CONSTANTS.langs.en ? 'meters per second' : 'метров в секунду'
     }.
     ${txt.hum}: ${current.rh}%.
     `;
 
     const txtForecastWeather = `
-    ${
-      lang === Utils.CONSTANTS.langs.en ? 'Forecast weather' : 'Прогноз погоды'
-    }.
+    ${lang === CONSTANTS.langs.en ? 'Forecast weather' : 'Прогноз погоды'}.
     ${forecast
       .map((dtF) => {
         return `
@@ -131,7 +126,7 @@ function App() {
           ? dtF.f.temp.toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
-          : Utils.toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
+          : toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
       }°.
@@ -142,8 +137,7 @@ function App() {
     `;
 
     const utterance = new SpeechSynthesisUtterance();
-    utterance.lang =
-      lang === Utils.CONSTANTS.langs.en ? lang : Utils.CONSTANTS.langs.ru;
+    utterance.lang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
 
     utterance.text = txtCurrentWeather;
     window.console.log(txtCurrentWeather);
@@ -154,7 +148,7 @@ function App() {
     speechSynthesis.speak(utterance);
   }
 
-  function cbSearch(value) {
+  function handleSearch(value) {
     const term = value.trim();
     if (term.length > 0) {
       setLoading(true);
@@ -233,13 +227,13 @@ function App() {
     newImage.src =
       photos.hits[Math.floor(Math.random() * photos.hits.length)].largeImageURL;
   }
-  React.useEffect(updateBackground, [photos]);
+  useEffect(updateBackground, [photos]);
 
   function updateTimer(value = lang) {
     clearInterval(dayTimeInterval);
     setDayTime(
       dayjs(
-        new Date().toLocaleString(Utils.CONSTANTS.langs.en, {
+        new Date().toLocaleString(CONSTANTS.langs.en, {
           timeZone: timezone,
         }),
       ).locale(value),
@@ -248,7 +242,7 @@ function App() {
       setInterval(() => {
         setDayTime(
           dayjs(
-            new Date().toLocaleString(Utils.CONSTANTS.langs.en, {
+            new Date().toLocaleString(CONSTANTS.langs.en, {
               timeZone: timezone,
             }),
           ).locale(value),
@@ -257,7 +251,7 @@ function App() {
       }),
     );
   }
-  React.useEffect(updateTimer, [timezone]);
+  useEffect(updateTimer, [timezone]);
 
   function updateApp() {
     if (Object.entries(coords).length === 0) return;
@@ -309,72 +303,13 @@ function App() {
 
           setTimezone(enCurrent.data[0].timezone);
 
-          let season;
-          switch (dayTime.month()) {
-            case 0:
-            case 1:
-            case 11:
-              season = coords.lat > 0 ? 'winter' : 'summer';
-              break;
-            case 2:
-            case 3:
-            case 4:
-              season = coords.lat > 0 ? 'spring' : 'autumn';
-              break;
-            case 5:
-            case 6:
-            case 7:
-              season = coords.lat > 0 ? 'summer' : 'winter';
-              break;
-            case 8:
-            case 9:
-            case 10:
-              season = coords.lat > 0 ? 'autumn' : 'winter';
-              break;
-            default:
-              season = 'year';
-          }
+          const season = getSeason(dayTime, coords);
+          const partOfDay = getPartOfDay(dayTime);
 
-          let pod;
-          switch (dayTime.hour()) {
-            case 22:
-            case 23:
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-              pod = 'night';
-              break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-              pod = 'morning';
-              break;
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-              pod = 'afternoon';
-              break;
-            case 18:
-            case 19:
-            case 20:
-            case 21:
-              pod = 'evening';
-              break;
-            default:
-              pod = 'day';
-          }
-
-          window.console.log(`Pixabay search: '${season} ${pod}'`);
-          const newPhotos = await pixabayService.getPhotos(`${season} ${pod}`);
+          window.console.log(`Pixabay search: '${season} ${partOfDay}'`);
+          const newPhotos = await pixabayService.getPhotos(
+            `${season} ${partOfDay}`,
+          );
           setPhotos(newPhotos);
         }
       } else {
@@ -387,11 +322,11 @@ function App() {
     }
     getFullData();
   }
-  React.useEffect(updateApp, [coords]);
+  useEffect(updateApp, [coords]);
 
   function initApp() {
     async function getInitialGeo() {
-      Utils.consoleInfo();
+      consoleInfo();
 
       const ip = await cloudflareService.getIP();
       if (!ip) {
@@ -412,13 +347,13 @@ function App() {
       setCoords(
         geoByIP
           ? { lat: geoByIP.latitude, lon: geoByIP.longitude }
-          : Utils.initValues.coords,
+          : initValues.coords,
       );
     });
 
     notyf.success("Don't forget to check the Chrome DevTools console");
   }
-  React.useEffect(initApp, []);
+  useEffect(initApp, []);
 
   return Object.entries(weather).length > 0 ? (
     <React.Fragment>
@@ -428,12 +363,12 @@ function App() {
             txtRefresh={txt.refresh}
             txtSpeak={txt.speak}
             loading={loading}
-            cbLoading={cbLoading}
+            handleLoading={handleLoading}
             lang={lang}
-            cbLang={cbLang}
+            handleLang={handleLang}
             degrees={degrees}
-            cbDegrees={cbDegrees}
-            cbSpeak={cbSpeak}
+            handleDegrees={handleDegrees}
+            handleSpeak={handleSpeak}
           />
           <Search
             degrees={degrees}
@@ -445,7 +380,7 @@ function App() {
             txtFeels={txt.feels}
             txtWind={txt.wind}
             txtMs={
-              lang === Utils.CONSTANTS.langs.en
+              lang === CONSTANTS.langs.en
                 ? 'meters per second'
                 : 'метров в секунду'
             }
@@ -454,7 +389,7 @@ function App() {
             txtVoice={txt.voice}
             txtSearch={txt.search}
             lang={lang}
-            cbSearch={cbSearch}
+            handleSearch={handleSearch}
           />
         </div>
 
@@ -476,7 +411,7 @@ function App() {
           <Maps
             txtLat={txt.lat}
             txtLon={txt.lon}
-            apiKeyJS={APIDATA.Here.apiKeyJS}
+            apiKeyJS={apiKeyJS}
             coords={coords}
             lang={lang}
           />

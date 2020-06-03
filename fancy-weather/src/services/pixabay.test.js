@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import PixabayService from './pixabay';
-
-const pixabayService = new PixabayService(APIDATA.Pixabay);
+import pixabayService from './index';
 
 describe('Pixabay', () => {
   it('should return object with array of photos', async () => {

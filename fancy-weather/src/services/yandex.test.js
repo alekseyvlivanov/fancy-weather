@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import YandexService from './yandex';
-
-const yandexService = new YandexService(APIDATA.Yandex);
+import { yandexService } from './index';
 
 describe('Yandex', () => {
   it('should return correct translation', async () => {

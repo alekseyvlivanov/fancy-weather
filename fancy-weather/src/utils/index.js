@@ -1,3 +1,23 @@
-import Utils from './utils';
+import {
+  CONSTANTS,
+  initValues,
+  voiceActions,
+  voiceCommands,
+  consoleInfo,
+  toCelsius,
+  toFahrenheit,
+  getSeason,
+  getPartOfDay,
+} from './utils';
 
-export default Utils;
+export {
+  CONSTANTS,
+  initValues,
+  voiceActions,
+  voiceCommands,
+  consoleInfo,
+  toCelsius,
+  toFahrenheit,
+  getSeason,
+  getPartOfDay,
+};

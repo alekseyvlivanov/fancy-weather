@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import WeatherbitService from './weatherbit';
-
-const weatherbitService = new WeatherbitService(APIDATA.Weatherbit);
+import { weatherbitService } from './index';
 
 describe('Weatherbit', () => {
   it('should return Current Weather', async () => {

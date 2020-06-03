@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import HereService from './here';
-
-const hereService = new HereService(APIDATA.Here);
+import hereService from './index';
 
 describe('Here', () => {
   it('should return correct Geo by place', async () => {

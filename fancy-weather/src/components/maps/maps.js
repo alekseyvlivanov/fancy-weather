@@ -5,20 +5,23 @@ import MapsHere from '../maps-here';
 import './maps.css';
 
 function Maps(props) {
+  const { apiKeyJS, coords, lang, txtLat, txtLon } = props;
+
   return (
     <div className="maps-block">
+      {' '}
       <MapsHere
         className="maps-here"
-        apiKeyJS={props.apiKeyJS}
-        coords={props.coords}
-        lang={props.lang}
+        apiKeyJS={apiKeyJS}
+        coords={coords}
+        lang={lang}
       />
       <div className="maps-coordinates">
         <p>
-          {props.txtLat}: {props.coords.lat}
+          {txtLat}: {coords.lat}
         </p>
         <p>
-          {props.txtLon}: {props.coords.lon}
+          {txtLon}: {coords.lon}
         </p>
       </div>
     </div>

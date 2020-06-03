@@ -1,7 +1,4 @@
-import APIDATA from './api-data';
-import CloudflareService from './cloudflare';
-
-const cloudflareService = new CloudflareService(APIDATA.Cloudflare);
+import cloudflareService from './index';
 
 describe('Cloudflare', () => {
   it('should return correct ip address', async () => {
