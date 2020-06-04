@@ -17,11 +17,11 @@ function Search(props) {
   const [speaking, setSpeaking] = useState(false);
   const [volume, setVolume] = useState(5);
 
-  function handleInput(e) {
+  function onChangeInput(e) {
     setInput(e.target.value);
   }
 
-  function onSubmit(e) {
+  function onSubmitForm(e) {
     e.preventDefault();
     handleSearch(input);
   }
@@ -122,13 +122,13 @@ function Search(props) {
   useEffect(initRecognition, [degrees, lang, place, textLabels]);
 
   return (
-    <form className="search-city" onSubmit={onSubmit}>
+    <form className="search-city" onSubmit={onSubmitForm}>
       <input
         className="search-input"
         type="text"
         placeholder={textLabels.input}
         value={input}
-        onChange={handleInput}
+        onChange={onChangeInput}
       />
 
       <svg

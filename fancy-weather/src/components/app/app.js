@@ -181,30 +181,39 @@ function App() {
   async function getPlaceByGeo(geo) {
     let place = null;
 
-    const enPlace = await hereService.getPlaceByGeo('en', geo);
-    const ruPlace = await hereService.getPlaceByGeo('ru', geo);
+    const placeInEnglish = await hereService.getPlaceByGeo(
+      CONSTANTS.langs.en,
+      geo,
+    );
+    const placeInRussian = await hereService.getPlaceByGeo(
+      CONSTANTS.langs.ru,
+      geo,
+    );
 
-    if (enPlace.items.length && ruPlace.items.length) {
+    if (placeInEnglish.items.length && placeInRussian.items.length) {
       place = {
         en: {
-          city: enPlace.items[0].address.city,
-          country: enPlace.items[0].address.countryName,
+          city: placeInEnglish.items[0].address.city,
+          country: placeInEnglish.items[0].address.countryName,
         },
         ru: {
-          city: ruPlace.items[0].address.city,
-          country: ruPlace.items[0].address.countryName,
+          city: placeInRussian.items[0].address.city,
+          country: placeInRussian.items[0].address.countryName,
         },
       };
 
-      const placeBe = await yandexService.translate(
-        [ruPlace.items[0].address.city, ruPlace.items[0].address.countryName],
-        'be',
+      const placeInBelorussian = await yandexService.translate(
+        [
+          placeInRussian.items[0].address.city,
+          placeInRussian.items[0].address.countryName,
+        ],
+        CONSTANTS.langs.be,
       );
 
-      place.be = placeBe
+      place.be = placeInBelorussian
         ? {
-            city: placeBe[0],
-            country: placeBe[1],
+            city: placeInBelorussian[0],
+            country: placeInBelorussian[1],
           }
         : place.ru;
     }
@@ -273,34 +282,52 @@ function App() {
           `Found: ${newPlace[lang].city}, ${newPlace[lang].country}`,
         );
 
-        const enCurrent = await weatherbitService.getCurrent(coords, 'en');
-        const ruCurrent = await weatherbitService.getCurrent(coords, 'ru');
-        const beCurrent = await weatherbitService.getCurrent(coords, 'be');
+        const enCurrentWeather = await weatherbitService.getCurrent(
+          coords,
+          CONSTANTS.langs.en,
+        );
+        const ruCurrentWeather = await weatherbitService.getCurrent(
+          coords,
+          CONSTANTS.langs.ru,
+        );
+        const beCurrentWeather = await weatherbitService.getCurrent(
+          coords,
+          CONSTANTS.langs.be,
+        );
 
-        const enForecast = await weatherbitService.getForecast(coords, 'en');
-        const ruForecast = await weatherbitService.getForecast(coords, 'ru');
-        const beForecast = await weatherbitService.getForecast(coords, 'be');
+        const enForecastWeather = await weatherbitService.getForecast(
+          coords,
+          CONSTANTS.langs.en,
+        );
+        const ruForecastWeather = await weatherbitService.getForecast(
+          coords,
+          CONSTANTS.langs.ru,
+        );
+        const beForecastWeather = await weatherbitService.getForecast(
+          coords,
+          CONSTANTS.langs.be,
+        );
 
         if (
-          enCurrent &&
-          ruCurrent &&
-          beCurrent &&
-          enForecast &&
-          ruForecast &&
-          beForecast
+          enCurrentWeather &&
+          ruCurrentWeather &&
+          beCurrentWeather &&
+          enForecastWeather &&
+          ruForecastWeather &&
+          beForecastWeather
         ) {
           const newWeather = {
             en: {
-              current: enCurrent,
-              forecast: enForecast,
+              current: enCurrentWeather,
+              forecast: enForecastWeather,
             },
             ru: {
-              current: ruCurrent,
-              forecast: ruForecast,
+              current: ruCurrentWeather,
+              forecast: ruForecastWeather,
             },
             be: {
-              current: beCurrent,
-              forecast: beForecast,
+              current: beCurrentWeather,
+              forecast: beForecastWeather,
             },
           };
 
@@ -310,7 +337,7 @@ function App() {
           setWeatherFull(newWeather);
           setWeather(newWeather[lang]);
 
-          setTimezone(enCurrent.data[0].timezone);
+          setTimezone(enCurrentWeather.data[0].timezone);
 
           const season = getSeason(dayTime, coords);
           const partOfDay = getPartOfDay(dayTime);
@@ -365,7 +392,7 @@ function App() {
   useEffect(initApp, []);
 
   return Object.entries(weather).length > 0 ? (
-    <React.Fragment>
+    <>
       <div className="app">
         <div className="app-header">
           <Control
@@ -417,7 +444,7 @@ function App() {
       >
         <img className="pixabay" src={pixabay} alt="pixabay" />
       </a>
-    </React.Fragment>
+    </>
   ) : null;
 }
 

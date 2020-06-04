@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { toFahrenheit } from '../../utils';
+import { toFahrenheit, CONSTANTS } from '../../utils';
 
 import './marquee.css';
 
@@ -13,11 +13,11 @@ function Marquee(props) {
         <span>{`${dayForecast.valid_date}:`}</span>
         <span>{dayForecast.weather.description}</span>
         <span>{`${
-          degrees === 'celcius'
+          degrees === CONSTANTS.degrees.celcius
             ? dayForecast.min_temp.toFixed(1)
             : toFahrenheit(dayForecast.min_temp).toFixed(1)
         }°-${
-          degrees === 'celcius'
+          degrees === CONSTANTS.degrees.celcius
             ? dayForecast.max_temp.toFixed(1)
             : toFahrenheit(dayForecast.max_temp).toFixed(1)
         }°`}</span>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { toFahrenheit } from '../../utils';
+import { toFahrenheit, CONSTANTS } from '../../utils';
 
 import './weather.css';
 
@@ -20,7 +20,7 @@ function Weather(props) {
         <h5>{dayTime.add(idx, 'day').format('dddd')}</h5>
         <div className="day-summary">
           <span>
-            {degrees === 'celcius'
+            {degrees === CONSTANTS.degrees.celcius
               ? dayForecast.temp.toFixed(1)
               : toFahrenheit(dayForecast.temp).toFixed(1)}
             °
@@ -51,7 +51,7 @@ function Weather(props) {
       <div className="weather-today">
         <div className="today-left">
           <span className="left-temp">
-            {degrees === 'celcius'
+            {degrees === CONSTANTS.degrees.celcius
               ? currentWeather.temp.toFixed(1)
               : toFahrenheit(currentWeather.temp).toFixed(1)}
           </span>
@@ -67,7 +67,7 @@ function Weather(props) {
             <p className="summary">{currentWeather.weather.description}</p>
             <p className="feels">
               {textLabels.feels}:{' '}
-              {degrees === 'celcius'
+              {degrees === CONSTANTS.degrees.celcius
                 ? currentWeather.app_temp.toFixed(1)
                 : toFahrenheit(currentWeather.app_temp).toFixed(1)}
               °
