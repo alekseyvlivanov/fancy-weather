@@ -5,7 +5,7 @@ import { toFahrenheit } from '../../utils';
 import './marquee.css';
 
 function Marquee(props) {
-  const { degrees, weather, textLabels } = props;
+  const { degrees, textLabels, weather } = props;
 
   const items = weather.forecast.data.map((dayForecast, idx) => {
     return (

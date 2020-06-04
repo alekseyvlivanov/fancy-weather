@@ -5,7 +5,7 @@ import { toFahrenheit } from '../../utils';
 import './weather.css';
 
 function Weather(props) {
-  const { degrees, dayTime, place, weather, textLabels } = props;
+  const { dayTime, degrees, place, textLabels, weather } = props;
 
   const current = weather.current.data[0];
   const forecastTotal = weather.forecast.data;

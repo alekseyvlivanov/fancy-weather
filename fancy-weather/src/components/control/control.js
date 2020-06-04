@@ -7,13 +7,13 @@ import './control.css';
 function Control(props) {
   const {
     degrees,
-    handleDegrees,
     lang,
-    handleLang,
     loading,
+    textLabels,
+    handleDegrees,
+    handleLang,
     handleLoading,
     handleSpeak,
-    textLabels,
   } = props;
 
   return (

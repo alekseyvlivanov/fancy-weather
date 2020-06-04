@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef } from 'react';
 import './maps-here.css';
 
 function MapsHere(props) {
-  const { apiKeyJS, lang, coords } = props;
+  const { apiKeyJS, coords, lang } = props;
 
   const mapRef = useRef(null);
 

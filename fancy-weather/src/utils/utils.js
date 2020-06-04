@@ -29,6 +29,8 @@ const initValues = {
       hum: 'Humidity',
       lat: 'Latitude',
       lon: 'Longitude',
+      current: 'Current weather',
+      forecast: 'Forecast weather',
     },
     ru: {
       refresh: 'Обновить фоновую картинку',
@@ -43,6 +45,8 @@ const initValues = {
       hum: 'Влажность',
       lat: 'Широта',
       lon: 'Долгота',
+      current: 'Текущая погода',
+      forecast: 'Прогноз погоды',
     },
     be: {
       refresh: 'Абнавіць фонавую карцінку',
@@ -57,6 +61,8 @@ const initValues = {
       hum: 'Вільготнасць',
       lat: 'Шырата',
       lon: 'Даўгата',
+      current: "Бягучая надвор'е",
+      forecast: "Прагноз надвор'я",
     },
   },
 };

@@ -14,6 +14,7 @@ import Marquee from '../marquee';
 import {
   CONSTANTS,
   initValues,
+  voiceActions,
   consoleInfo,
   toFahrenheit,
   getSeason,
@@ -72,80 +73,88 @@ function App() {
     setDegrees(value);
   }
 
-  function handleSpeak() {
+  function handleSpeak(volume = 0.5, mode) {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
       return;
     }
 
-    const current = weather.current.data[0];
-    const forecast = [
-      { dt: dayTime.add(1, 'day').format('dddd'), f: weather.forecast.data[1] },
-      { dt: dayTime.add(2, 'day').format('dddd'), f: weather.forecast.data[2] },
-      { dt: dayTime.add(3, 'day').format('dddd'), f: weather.forecast.data[3] },
-    ];
     const speakLang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
 
-    const txtCurrentWeather = `
-    ${place.city} ${place.country}.
-    ${lang === CONSTANTS.langs.en ? 'Current weather' : 'Текущая погода'}: ${
-      degrees === 'celcius'
-        ? current.temp.toLocaleString(speakLang, {
-            maximumFractionDigits: 1,
-          })
-        : toFahrenheit(current.temp).toLocaleString(speakLang, {
-            maximumFractionDigits: 1,
-          })
-    }°.
-    ${current.weather.description}.
-    ${textLabels.feels}: ${
-      degrees === 'celcius'
-        ? current.app_temp.toLocaleString(speakLang, {
-            maximumFractionDigits: 1,
-          })
-        : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
-            maximumFractionDigits: 1,
-          })
-    }°.
-    ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
-      maximumFractionDigits: 1,
-    })} ${
-      lang === CONSTANTS.langs.en ? 'meters per second' : 'метров в секунду'
-    }.
-    ${textLabels.hum}: ${current.rh}%.
-    `;
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.lang = speakLang;
+    utterance.volume = volume;
 
-    const txtForecastWeather = `
-    ${lang === CONSTANTS.langs.en ? 'Forecast weather' : 'Прогноз погоды'}.
-    ${forecast
-      .map((dtF) => {
-        return `
-      ${dtF.dt}.
-      ${
-        degrees === 'celcius'
-          ? dtF.f.temp.toLocaleString(speakLang, {
+    if (!mode || mode === voiceActions.weather) {
+      const current = weather.current.data[0];
+
+      const textCurrentWeather = `
+      ${place.city}, ${place.country}.
+      ${textLabels.current}: ${
+        degrees === CONSTANTS.degrees.celcius
+          ? current.temp.toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
-          : toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
+          : toFahrenheit(current.temp).toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
       }°.
-      ${dtF.f.weather.description}.
+      ${current.weather.description}.
+      ${textLabels.feels}: ${
+        degrees === CONSTANTS.degrees.celcius
+          ? current.app_temp.toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+          : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+      }°.
+      ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
+        maximumFractionDigits: 1,
+      })} ${textLabels.mslong}.
+      ${textLabels.hum}: ${current.rh}%.
       `;
-      })
-      .join('')}
-    `;
 
-    const utterance = new SpeechSynthesisUtterance();
-    utterance.lang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
+      utterance.text = textCurrentWeather;
+      window.console.log(textCurrentWeather);
+      speechSynthesis.speak(utterance);
+    }
 
-    utterance.text = txtCurrentWeather;
-    window.console.log(txtCurrentWeather);
-    speechSynthesis.speak(utterance);
+    if (!mode || mode === voiceActions.forecast) {
+      const forecastTotal = weather.forecast.data;
 
-    utterance.text = txtForecastWeather;
-    window.console.log(txtForecastWeather);
-    speechSynthesis.speak(utterance);
+      const forecastDays = [
+        forecastTotal[1],
+        forecastTotal[2],
+        forecastTotal[3],
+      ]
+        .map((dayForecast, idx) => {
+          return `
+      ${dayTime.add(idx, 'day').format('dddd')}.
+      ${
+        degrees === CONSTANTS.degrees.celcius
+          ? dayForecast.temp.toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+          : toFahrenheit(dayForecast.temp).toLocaleString(speakLang, {
+              maximumFractionDigits: 1,
+            })
+      }°.
+      ${dayForecast.weather.description}.
+      `;
+        })
+        .join('');
+
+      const textForecastWeather = `
+      ${place.city}, ${place.country}.
+      ${textLabels.forecast}.
+      ${forecastDays}
+      `;
+
+      utterance.text = textForecastWeather;
+      window.console.log(textForecastWeather);
+      speechSynthesis.speak(utterance);
+    }
   }
 
   function handleSearch(value) {
@@ -360,40 +369,33 @@ function App() {
       <div className="app">
         <div className="app-header">
           <Control
-            loading={loading}
-            handleLoading={handleLoading}
-            lang={lang}
-            handleLang={handleLang}
             degrees={degrees}
-            handleDegrees={handleDegrees}
-            handleSpeak={handleSpeak}
+            lang={lang}
+            loading={loading}
             textLabels={textLabels}
+            handleDegrees={handleDegrees}
+            handleLang={handleLang}
+            handleLoading={handleLoading}
+            handleSpeak={handleSpeak}
           />
           <Search
             degrees={degrees}
-            place={place}
-            dtF1={dayTime.add(1, 'day').format('dddd')}
-            dtF2={dayTime.add(2, 'day').format('dddd')}
-            dtF3={dayTime.add(3, 'day').format('dddd')}
-            weather={weather}
-            txtMs={
-              lang === CONSTANTS.langs.en
-                ? 'meters per second'
-                : 'метров в секунду'
-            }
             lang={lang}
-            handleSearch={handleSearch}
+            place={place}
             textLabels={textLabels}
+            weather={weather}
+            handleSearch={handleSearch}
+            handleSpeak={handleSpeak}
           />
         </div>
 
         <div className="app-main">
           <Weather
+            dayTime={dayTime}
             degrees={degrees}
             place={place}
-            dayTime={dayTime}
-            weather={weather}
             textLabels={textLabels}
+            weather={weather}
           />
           <Maps
             apiKeyJS={apiKeyJS}
@@ -405,7 +407,7 @@ function App() {
       </div>
 
       <div className="app-footer">
-        <Marquee degrees={degrees} weather={weather} textLabels={textLabels} />
+        <Marquee degrees={degrees} textLabels={textLabels} weather={weather} />
       </div>
 
       <a

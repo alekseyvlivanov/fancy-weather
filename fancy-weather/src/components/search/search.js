@@ -2,26 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import 'notyf/notyf.min.css';
 import NotyfContext from '../../notyf-context';
 
-import {
-  CONSTANTS,
-  voiceActions,
-  voiceCommands,
-  toFahrenheit,
-} from '../../utils';
+import { voiceActions, voiceCommands } from '../../utils';
 
 import './search.css';
 
 function Search(props) {
   const {
     degrees,
-    dtF1,
-    dtF2,
-    dtF3,
     lang,
     place,
-    handleSearch,
-    weather,
     textLabels,
+    weather,
+    handleSearch,
+    handleSpeak,
   } = props;
 
   const notyf = useContext(NotyfContext);
@@ -30,15 +23,7 @@ function Search(props) {
   const [listening, setListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [speaking, setSpeaking] = useState(false);
-  const [utterance, setUtterance] = useState(null);
   const [volume, setVolume] = useState(5);
-
-  const current = weather.current.data[0];
-  const forecast = [
-    { dt: dtF1, f: weather.forecast.data[1] },
-    { dt: dtF2, f: weather.forecast.data[2] },
-    { dt: dtF3, f: weather.forecast.data[3] },
-  ];
 
   function handleInput(e) {
     setInput(e.target.value);
@@ -66,10 +51,6 @@ function Search(props) {
         recognition.abort();
         recognition.stop();
         document.querySelector('.search-voice').classList.remove('listening');
-
-        if (utterance && !speaking) {
-          speechSynthesis.cancel();
-        }
       }
     }
   }
@@ -83,19 +64,11 @@ function Search(props) {
   useEffect(updateVolume, [volume]);
 
   function updateSpeaking() {
-    if (utterance && !speaking) {
+    if (!speaking) {
       speechSynthesis.cancel();
     }
   }
   useEffect(updateSpeaking, [speaking]);
-
-  function speak() {
-    if (utterance) {
-      window.console.log(utterance.text);
-      speechSynthesis.speak(utterance);
-    }
-  }
-  useEffect(speak, [utterance]);
 
   function initRecognition() {
     const SpeechRecognition =
@@ -127,89 +100,15 @@ function Search(props) {
       const commands = Object.keys(voiceCommands);
       const transcript = e.results[e.resultIndex][0].transcript;
       const term = transcript.trim().toLowerCase();
-      const speakLang = lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
 
       if (commands.includes(term)) {
         switch (voiceCommands[term]) {
           case voiceActions.weather:
           case voiceActions.forecast:
-            if (utterance && speaking) {
+            if (speaking) {
               setSpeaking(false);
             }
-
-            let txtWeather;
-
-            if (voiceCommands[term] === voiceActions.weather) {
-              txtWeather = `
-              ${place.city} ${place.country}.
-              ${
-                lang === CONSTANTS.langs.en
-                  ? 'Current weather'
-                  : 'Текущая погода'
-              }: ${
-                degrees === 'celcius'
-                  ? current.temp.toLocaleString(speakLang, {
-                      maximumFractionDigits: 1,
-                    })
-                  : toFahrenheit(current.temp).toLocaleString(speakLang, {
-                      maximumFractionDigits: 1,
-                    })
-              }°.
-              ${current.weather.description}.
-              ${textLabels.feels}: ${
-                degrees === 'celcius'
-                  ? current.app_temp.toLocaleString(speakLang, {
-                      maximumFractionDigits: 1,
-                    })
-                  : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
-                      maximumFractionDigits: 1,
-                    })
-              }°.
-              ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
-                maximumFractionDigits: 1,
-              })} ${textLabels.mslong}.
-              ${textLabels.hum}: ${current.rh}%.
-              `;
-            } else if (voiceCommands[term] === voiceActions.forecast) {
-              txtWeather = `
-              ${place.city} ${place.country}.
-              ${
-                lang === CONSTANTS.langs.en
-                  ? 'Forecast weather'
-                  : 'Прогноз погоды'
-              }.
-              ${forecast
-                .map((dtF) => {
-                  return `
-                ${dtF.dt}.
-                ${
-                  degrees === 'celcius'
-                    ? dtF.f.temp.toLocaleString(speakLang, {
-                        maximumFractionDigits: 1,
-                      })
-                    : toFahrenheit(dtF.f.temp).toLocaleString(speakLang, {
-                        maximumFractionDigits: 1,
-                      })
-                }°.
-                ${dtF.f.weather.description}.
-                `;
-                })
-                .join('')}
-              `;
-            } else {
-              notyf.error('Unknown command');
-              return;
-            }
-
-            const newUtterance = new SpeechSynthesisUtterance();
-            newUtterance.lang =
-              lang === CONSTANTS.langs.en ? lang : CONSTANTS.langs.ru;
-            newUtterance.volume = volume / 10;
-            newUtterance.text = txtWeather;
-
-            setSpeaking(true);
-            setUtterance(newUtterance);
-
+            handleSpeak(volume / 10, voiceCommands[term]);
             break;
           case voiceActions.louder:
             setVolume((prevVolume) => Math.min(prevVolume + 1, 10));
