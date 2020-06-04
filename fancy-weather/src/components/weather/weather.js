@@ -7,13 +7,13 @@ import './weather.css';
 function Weather(props) {
   const { dayTime, degrees, place, textLabels, weather } = props;
 
-  const current = weather.current.data[0];
-  const forecastTotal = weather.forecast.data;
+  const currentWeather = weather.current.data[0];
+  const forecastWeather = weather.forecast.data;
 
   const forecastDays = [
-    forecastTotal[1],
-    forecastTotal[2],
-    forecastTotal[3],
+    forecastWeather[1],
+    forecastWeather[2],
+    forecastWeather[3],
   ].map((dayForecast, idx) => {
     return (
       <div key={idx} className="weather-day">
@@ -52,32 +52,32 @@ function Weather(props) {
         <div className="today-left">
           <span className="left-temp">
             {degrees === 'celcius'
-              ? current.temp.toFixed(1)
-              : toFahrenheit(current.temp).toFixed(1)}
+              ? currentWeather.temp.toFixed(1)
+              : toFahrenheit(currentWeather.temp).toFixed(1)}
           </span>
           <span className="left-degrees">°</span>
         </div>
         <div className="today-right">
           <img
             className="today-icon"
-            src={`../assets/${current.weather.icon}.svg`}
+            src={`../assets/${currentWeather.weather.icon}.svg`}
             alt="today icon"
           />
           <div className="today-summary">
-            <p className="summary">{current.weather.description}</p>
+            <p className="summary">{currentWeather.weather.description}</p>
             <p className="feels">
               {textLabels.feels}:{' '}
               {degrees === 'celcius'
-                ? current.app_temp.toFixed(1)
-                : toFahrenheit(current.app_temp).toFixed(1)}
+                ? currentWeather.app_temp.toFixed(1)
+                : toFahrenheit(currentWeather.app_temp).toFixed(1)}
               °
             </p>
             <p className="wind">
-              {textLabels.wind}: {current.wind_spd.toFixed(1)}{' '}
+              {textLabels.wind}: {currentWeather.wind_spd.toFixed(1)}{' '}
               <span className="ms">{textLabels.ms}</span>
             </p>
             <p className="humidity">
-              {textLabels.hum}: {current.rh}%
+              {textLabels.hum}: {currentWeather.rh}%
             </p>
           </div>
         </div>

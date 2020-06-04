@@ -16,12 +16,28 @@ function Control(props) {
     handleSpeak,
   } = props;
 
+  function onChangeDegrees(e) {
+    handleDegrees(e.target.value);
+  }
+
+  function onChangeLang(e) {
+    handleLang(e.target.value);
+  }
+
+  function onClickLoading() {
+    handleLoading();
+  }
+
+  function onClickSpeak() {
+    handleSpeak();
+  }
+
   return (
     <div className="control-block">
       <button
         className="control-refresh"
         title={textLabels.refresh}
-        onClick={() => handleLoading()}
+        onClick={onClickLoading}
       >
         <img
           src={refresh}
@@ -33,11 +49,7 @@ function Control(props) {
       </button>
 
       <div className="control-lang">
-        <select
-          name="lang"
-          value={lang}
-          onChange={(e) => handleLang(e.target.value)}
-        >
+        <select name="lang" value={lang} onChange={onChangeLang}>
           <option value="en">EN</option>
           <option value="ru">RU</option>
           <option value="be">BE</option>
@@ -51,7 +63,7 @@ function Control(props) {
           id="fahrenheit"
           value="fahrenheit"
           checked={degrees === 'fahrenheit'}
-          onChange={(e) => handleDegrees(e.target.value)}
+          onChange={onChangeDegrees}
         />
         <label className="fahrenheit" htmlFor="fahrenheit">
           °F
@@ -62,7 +74,7 @@ function Control(props) {
           id="celcius"
           value="celcius"
           checked={degrees === 'celcius'}
-          onChange={(e) => handleDegrees(e.target.value)}
+          onChange={onChangeDegrees}
         />
         <label className="celsius" htmlFor="celcius">
           °C
@@ -72,7 +84,7 @@ function Control(props) {
       <button
         className="control-audio"
         title={textLabels.speak}
-        onClick={() => handleSpeak()}
+        onClick={onClickSpeak}
       >
         <svg
           width="16"

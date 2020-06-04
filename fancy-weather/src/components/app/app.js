@@ -54,9 +54,9 @@ function App() {
   const [weather, setWeather] = useState({});
   const [photos, setPhotos] = useState({});
 
-  function handleLoading() {
-    setLoading(true);
-    updateBackground();
+  function handleDegrees(value) {
+    localStorage.setItem('degrees', value);
+    setDegrees(value);
   }
 
   function handleLang(value) {
@@ -68,9 +68,9 @@ function App() {
     setTextLabels(initValues.textLabels[value]);
   }
 
-  function handleDegrees(value) {
-    localStorage.setItem('degrees', value);
-    setDegrees(value);
+  function handleLoading() {
+    setLoading(true);
+    updateBackground();
   }
 
   function handleSpeak(volume = 0.5, mode) {
@@ -86,33 +86,33 @@ function App() {
     utterance.volume = volume;
 
     if (!mode || mode === voiceActions.weather) {
-      const current = weather.current.data[0];
+      const currentWeather = weather.current.data[0];
 
       const textCurrentWeather = `
       ${place.city}, ${place.country}.
       ${textLabels.current}: ${
         degrees === CONSTANTS.degrees.celcius
-          ? current.temp.toLocaleString(speakLang, {
+          ? currentWeather.temp.toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
-          : toFahrenheit(current.temp).toLocaleString(speakLang, {
+          : toFahrenheit(currentWeather.temp).toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
       }°.
-      ${current.weather.description}.
+      ${currentWeather.weather.description}.
       ${textLabels.feels}: ${
         degrees === CONSTANTS.degrees.celcius
-          ? current.app_temp.toLocaleString(speakLang, {
+          ? currentWeather.app_temp.toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
-          : toFahrenheit(current.app_temp).toLocaleString(speakLang, {
+          : toFahrenheit(currentWeather.app_temp).toLocaleString(speakLang, {
               maximumFractionDigits: 1,
             })
       }°.
-      ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
+      ${textLabels.wind}: ${currentWeather.wind_spd.toLocaleString(speakLang, {
         maximumFractionDigits: 1,
       })} ${textLabels.mslong}.
-      ${textLabels.hum}: ${current.rh}%.
+      ${textLabels.hum}: ${currentWeather.rh}%.
       `;
 
       utterance.text = textCurrentWeather;
@@ -121,12 +121,12 @@ function App() {
     }
 
     if (!mode || mode === voiceActions.forecast) {
-      const forecastTotal = weather.forecast.data;
+      const forecastWeather = weather.forecast.data;
 
       const forecastDays = [
-        forecastTotal[1],
-        forecastTotal[2],
-        forecastTotal[3],
+        forecastWeather[1],
+        forecastWeather[2],
+        forecastWeather[3],
       ]
         .map((dayForecast, idx) => {
           return `
@@ -179,13 +179,13 @@ function App() {
   }
 
   async function getPlaceByGeo(geo) {
-    let res = null;
+    let place = null;
 
     const enPlace = await hereService.getPlaceByGeo('en', geo);
     const ruPlace = await hereService.getPlaceByGeo('ru', geo);
 
     if (enPlace.items.length && ruPlace.items.length) {
-      res = {
+      place = {
         en: {
           city: enPlace.items[0].address.city,
           country: enPlace.items[0].address.countryName,
@@ -196,20 +196,20 @@ function App() {
         },
       };
 
-      const resBe = await yandexService.translate(
+      const placeBe = await yandexService.translate(
         [ruPlace.items[0].address.city, ruPlace.items[0].address.countryName],
         'be',
       );
 
-      res.be = resBe
+      place.be = placeBe
         ? {
-            city: resBe[0],
-            country: resBe[1],
+            city: placeBe[0],
+            country: placeBe[1],
           }
-        : res.ru;
+        : place.ru;
     }
 
-    return res;
+    return place;
   }
 
   function updateBackground() {
