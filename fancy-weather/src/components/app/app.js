@@ -41,7 +41,7 @@ function App() {
   const [lang, setLang] = useState(initValues.lang);
   const [degrees, setDegrees] = useState(initValues.degrees);
   const [timezone, setTimezone] = useState(initValues.timezone);
-  const [txt, setTxt] = useState(initValues.txt[lang]);
+  const [textLabels, setTextLabels] = useState(initValues.textLabels[lang]);
 
   const [dayTime, setDayTime] = useState(dayjs().locale(lang));
   const [dayTimeInterval, setDayTimeInterval] = useState(null);
@@ -64,7 +64,7 @@ function App() {
     setPlace(placeFull[value]);
     updateTimer(value);
     setWeather(weatherFull[value]);
-    setTxt(initValues.txt[value]);
+    setTextLabels(initValues.textLabels[value]);
   }
 
   function handleDegrees(value) {
@@ -98,7 +98,7 @@ function App() {
           })
     }°.
     ${current.weather.description}.
-    ${txt.feels}: ${
+    ${textLabels.feels}: ${
       degrees === 'celcius'
         ? current.app_temp.toLocaleString(speakLang, {
             maximumFractionDigits: 1,
@@ -107,12 +107,12 @@ function App() {
             maximumFractionDigits: 1,
           })
     }°.
-    ${txt.wind}: ${current.wind_spd.toLocaleString(speakLang, {
+    ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
       maximumFractionDigits: 1,
     })} ${
       lang === CONSTANTS.langs.en ? 'meters per second' : 'метров в секунду'
     }.
-    ${txt.hum}: ${current.rh}%.
+    ${textLabels.hum}: ${current.rh}%.
     `;
 
     const txtForecastWeather = `
@@ -360,8 +360,6 @@ function App() {
       <div className="app">
         <div className="app-header">
           <Control
-            txtRefresh={txt.refresh}
-            txtSpeak={txt.speak}
             loading={loading}
             handleLoading={handleLoading}
             lang={lang}
@@ -369,6 +367,7 @@ function App() {
             degrees={degrees}
             handleDegrees={handleDegrees}
             handleSpeak={handleSpeak}
+            textLabels={textLabels}
           />
           <Search
             degrees={degrees}
@@ -377,19 +376,14 @@ function App() {
             dtF2={dayTime.add(2, 'day').format('dddd')}
             dtF3={dayTime.add(3, 'day').format('dddd')}
             weather={weather}
-            txtFeels={txt.feels}
-            txtWind={txt.wind}
             txtMs={
               lang === CONSTANTS.langs.en
                 ? 'meters per second'
                 : 'метров в секунду'
             }
-            txtHum={txt.hum}
-            txtInput={txt.input}
-            txtVoice={txt.voice}
-            txtSearch={txt.search}
             lang={lang}
             handleSearch={handleSearch}
+            textLabels={textLabels}
           />
         </div>
 
@@ -397,35 +391,21 @@ function App() {
           <Weather
             degrees={degrees}
             place={place}
-            dtDay={dayTime.format('ddd D MMM')}
-            dtTime={dayTime.format('HH:mm:ss')}
-            dtF1={dayTime.add(1, 'day').format('dddd')}
-            dtF2={dayTime.add(2, 'day').format('dddd')}
-            dtF3={dayTime.add(3, 'day').format('dddd')}
+            dayTime={dayTime}
             weather={weather}
-            txtFeels={txt.feels}
-            txtWind={txt.wind}
-            txtMs={txt.ms}
-            txtHum={txt.hum}
+            textLabels={textLabels}
           />
           <Maps
-            txtLat={txt.lat}
-            txtLon={txt.lon}
             apiKeyJS={apiKeyJS}
             coords={coords}
             lang={lang}
+            textLabels={textLabels}
           />
         </div>
       </div>
 
       <div className="app-footer">
-        <Marquee
-          degrees={degrees}
-          weather={weather}
-          txtWind={txt.wind}
-          txtMs={txt.ms}
-          txtHum={txt.hum}
-        />
+        <Marquee degrees={degrees} weather={weather} textLabels={textLabels} />
       </div>
 
       <a

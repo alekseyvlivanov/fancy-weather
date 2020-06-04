@@ -5,25 +5,35 @@ import { toFahrenheit } from '../../utils';
 import './weather.css';
 
 function Weather(props) {
-  const {
-    degrees,
-    dtDay,
-    dtF1,
-    dtF2,
-    dtF3,
-    dtTime,
-    place,
-    weather,
-    txtFeels,
-    txtHum,
-    txtMs,
-    txtWind,
-  } = props;
+  const { degrees, dayTime, place, weather, textLabels } = props;
 
   const current = weather.current.data[0];
-  const forecast1 = weather.forecast.data[1];
-  const forecast2 = weather.forecast.data[2];
-  const forecast3 = weather.forecast.data[3];
+  const forecastTotal = weather.forecast.data;
+
+  const forecastDays = [
+    forecastTotal[1],
+    forecastTotal[2],
+    forecastTotal[3],
+  ].map((dayForecast, idx) => {
+    return (
+      <div key={idx} className="weather-day">
+        <h5>{dayTime.add(idx, 'day').format('dddd')}</h5>
+        <div className="day-summary">
+          <span>
+            {degrees === 'celcius'
+              ? dayForecast.temp.toFixed(1)
+              : toFahrenheit(dayForecast.temp).toFixed(1)}
+            °
+          </span>
+          <img
+            className="day-icon"
+            src={`../assets/${dayForecast.weather.icon}.svg`}
+            alt="day icon"
+          />
+        </div>
+      </div>
+    );
+  });
 
   return (
     <div className="weather-block">
@@ -33,8 +43,8 @@ function Weather(props) {
           <span className="country">{place.country}</span>
         </h1>
         <h3 className="date-time">
-          <span className="date">{dtDay}</span>
-          <span className="time">{dtTime}</span>
+          <span className="date">{dayTime.format('ddd D MMM')}</span>
+          <span className="time">{dayTime.format('HH:mm:ss')}</span>
         </h3>
       </div>
 
@@ -56,73 +66,24 @@ function Weather(props) {
           <div className="today-summary">
             <p className="summary">{current.weather.description}</p>
             <p className="feels">
-              {txtFeels}:{' '}
+              {textLabels.feels}:{' '}
               {degrees === 'celcius'
                 ? current.app_temp.toFixed(1)
                 : toFahrenheit(current.app_temp).toFixed(1)}
               °
             </p>
             <p className="wind">
-              {txtWind}: {current.wind_spd.toFixed(1)}{' '}
-              <span className="ms">{txtMs}</span>
+              {textLabels.wind}: {current.wind_spd.toFixed(1)}{' '}
+              <span className="ms">{textLabels.ms}</span>
             </p>
             <p className="humidity">
-              {txtHum}: {current.rh}%
+              {textLabels.hum}: {current.rh}%
             </p>
           </div>
         </div>
       </div>
 
-      <div className="weather-days">
-        <div className="weather-day">
-          <h5>{dtF1}</h5>
-          <div className="day-summary">
-            <span>
-              {degrees === 'celcius'
-                ? forecast1.temp.toFixed(1)
-                : toFahrenheit(forecast1.temp).toFixed(1)}
-              °
-            </span>
-            <img
-              className="day-icon"
-              src={`../assets/${forecast1.weather.icon}.svg`}
-              alt="day icon"
-            />
-          </div>
-        </div>
-        <div className="weather-day">
-          <h5>{dtF2}</h5>
-          <div className="day-summary">
-            <span>
-              {degrees === 'celcius'
-                ? forecast2.temp.toFixed(1)
-                : toFahrenheit(forecast2.temp).toFixed(1)}
-              °
-            </span>
-            <img
-              className="day-icon"
-              src={`../assets/${forecast2.weather.icon}.svg`}
-              alt="day icon"
-            />
-          </div>
-        </div>
-        <div className="weather-day">
-          <h5>{dtF3}</h5>
-          <div className="day-summary">
-            <span>
-              {degrees === 'celcius'
-                ? forecast3.temp.toFixed(1)
-                : toFahrenheit(forecast3.temp).toFixed(1)}
-              °
-            </span>
-            <img
-              className="day-icon"
-              src={`../assets/${forecast3.weather.icon}.svg`}
-              alt="day icon"
-            />
-          </div>
-        </div>
-      </div>
+      <div className="weather-days">{forecastDays}</div>
     </div>
   );
 }

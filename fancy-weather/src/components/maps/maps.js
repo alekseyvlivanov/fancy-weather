@@ -5,7 +5,7 @@ import MapsHere from '../maps-here';
 import './maps.css';
 
 function Maps(props) {
-  const { apiKeyJS, coords, lang, txtLat, txtLon } = props;
+  const { apiKeyJS, coords, lang, textLabels } = props;
 
   return (
     <div className="maps-block">
@@ -18,10 +18,10 @@ function Maps(props) {
       />
       <div className="maps-coordinates">
         <p>
-          {txtLat}: {coords.lat}
+          {textLabels.lat}: {coords.lat}
         </p>
         <p>
-          {txtLon}: {coords.lon}
+          {textLabels.lon}: {coords.lon}
         </p>
       </div>
     </div>

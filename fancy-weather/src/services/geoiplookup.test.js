@@ -1,4 +1,4 @@
-import geoIPLookupService from './index';
+import { geoIPLookupService } from './index';
 
 describe('GeoIPLookup', () => {
   it('should return correct Geo data for IP', async () => {

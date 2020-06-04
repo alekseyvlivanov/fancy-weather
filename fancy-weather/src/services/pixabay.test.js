@@ -1,4 +1,4 @@
-import pixabayService from './index';
+import { pixabayService } from './index';
 
 describe('Pixabay', () => {
   it('should return object with array of photos', async () => {

@@ -21,13 +21,7 @@ function Search(props) {
     place,
     handleSearch,
     weather,
-    txtFeels,
-    txtHum,
-    txtInput,
-    txtMs,
-    txtSearch,
-    txtWind,
-    txtVoice,
+    textLabels,
   } = props;
 
   const notyf = useContext(NotyfContext);
@@ -46,7 +40,7 @@ function Search(props) {
     { dt: dtF3, f: weather.forecast.data[3] },
   ];
 
-  function cbInput(e) {
+  function handleInput(e) {
     setInput(e.target.value);
   }
 
@@ -162,7 +156,7 @@ function Search(props) {
                     })
               }°.
               ${current.weather.description}.
-              ${txtFeels}: ${
+              ${textLabels.feels}: ${
                 degrees === 'celcius'
                   ? current.app_temp.toLocaleString(speakLang, {
                       maximumFractionDigits: 1,
@@ -171,10 +165,10 @@ function Search(props) {
                       maximumFractionDigits: 1,
                     })
               }°.
-              ${txtWind}: ${current.wind_spd.toLocaleString(speakLang, {
+              ${textLabels.wind}: ${current.wind_spd.toLocaleString(speakLang, {
                 maximumFractionDigits: 1,
-              })} ${txtMs}.
-              ${txtHum}: ${current.rh}%.
+              })} ${textLabels.mslong}.
+              ${textLabels.hum}: ${current.rh}%.
               `;
             } else if (voiceCommands[term] === voiceActions.forecast) {
               txtWeather = `
@@ -234,25 +228,16 @@ function Search(props) {
 
     setRecognition(newRecognition);
   }
-  useEffect(initRecognition, [
-    degrees,
-    place,
-    weather,
-    txtFeels,
-    txtWind,
-    txtMs,
-    txtHum,
-    lang,
-  ]);
+  useEffect(initRecognition, [degrees, lang, place, weather, textLabels]);
 
   return (
     <form className="search-city" onSubmit={onSubmit}>
       <input
         className="search-input"
         type="text"
-        placeholder={txtInput}
+        placeholder={textLabels.input}
         value={input}
-        onChange={cbInput}
+        onChange={handleInput}
       />
 
       <svg
@@ -269,11 +254,11 @@ function Search(props) {
           fill="white"
           fillOpacity="0.4"
         />
-        <title>{txtVoice}</title>
+        <title>{textLabels.voice}</title>
       </svg>
 
       <button className="search-submit" type="submit">
-        {txtSearch}
+        {textLabels.search}
       </button>
     </form>
   );

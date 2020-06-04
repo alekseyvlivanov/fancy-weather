@@ -13,15 +13,14 @@ function Control(props) {
     loading,
     handleLoading,
     handleSpeak,
-    txtRefresh,
-    txtSpeak,
+    textLabels,
   } = props;
 
   return (
     <div className="control-block">
       <button
         className="control-refresh"
-        title={txtRefresh}
+        title={textLabels.refresh}
         onClick={() => handleLoading()}
       >
         <img
@@ -72,7 +71,7 @@ function Control(props) {
 
       <button
         className="control-audio"
-        title={txtSpeak}
+        title={textLabels.speak}
         onClick={() => handleSpeak()}
       >
         <svg

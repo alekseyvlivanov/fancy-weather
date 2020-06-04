@@ -1,4 +1,4 @@
-import cloudflareService from './index';
+import { cloudflareService } from './index';
 
 describe('Cloudflare', () => {
   it('should return correct ip address', async () => {

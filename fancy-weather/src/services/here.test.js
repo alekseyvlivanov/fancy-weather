@@ -1,4 +1,4 @@
-import hereService from './index';
+import { hereService } from './index';
 
 describe('Here', () => {
   it('should return correct Geo by place', async () => {

@@ -5,7 +5,7 @@ import { toFahrenheit } from '../../utils';
 import './marquee.css';
 
 function Marquee(props) {
-  const { degrees, weather, txtHum, txtMs, txtWind } = props;
+  const { degrees, weather, textLabels } = props;
 
   const items = weather.forecast.data.map((dayForecast, idx) => {
     return (
@@ -21,8 +21,10 @@ function Marquee(props) {
             ? dayForecast.max_temp.toFixed(1)
             : toFahrenheit(dayForecast.max_temp).toFixed(1)
         }°`}</span>
-        <span>{`${txtWind} ${dayForecast.wind_spd.toFixed(1)} ${txtMs}`}</span>
-        <span>{`${txtHum} ${dayForecast.rh}%`}</span>
+        <span>{`${textLabels.wind} ${dayForecast.wind_spd.toFixed(1)} ${
+          textLabels.ms
+        }`}</span>
+        <span>{`${textLabels.hum} ${dayForecast.rh}%`}</span>
       </div>
     );
   });

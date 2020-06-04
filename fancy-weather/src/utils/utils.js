@@ -15,7 +15,7 @@ const initValues = {
   degrees: localStorage.getItem('degrees') || CONSTANTS.degrees.celcius,
   coords: { lat: 43.1056, lon: 131.874 },
   timezone: 'Asia/Vladivostok',
-  txt: {
+  textLabels: {
     en: {
       refresh: 'Refresh background',
       speak: 'Voice forecast',
@@ -25,6 +25,7 @@ const initValues = {
       feels: 'Feels like',
       wind: 'Wind',
       ms: 'm/s',
+      mslong: 'meters per second',
       hum: 'Humidity',
       lat: 'Latitude',
       lon: 'Longitude',
@@ -38,6 +39,7 @@ const initValues = {
       feels: 'Ощущается',
       wind: 'Ветер',
       ms: 'м/с',
+      mslong: 'метров в секунду',
       hum: 'Влажность',
       lat: 'Широта',
       lon: 'Долгота',
@@ -50,7 +52,8 @@ const initValues = {
       search: 'Пошук',
       feels: 'Адчуваецца',
       wind: 'Вецер',
-      ms: 'м/з',
+      ms: 'м/с',
+      mslong: 'метраў у секунду',
       hum: 'Вільготнасць',
       lat: 'Шырата',
       lon: 'Даўгата',
@@ -141,7 +144,7 @@ function getSeason(dayTime, coords) {
     case 8:
     case 9:
     case 10:
-      season = coords.lat > 0 ? 'autumn' : 'winter';
+      season = coords.lat > 0 ? 'autumn' : 'spring';
       break;
     default:
       season = 'year';
