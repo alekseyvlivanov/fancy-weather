@@ -7,15 +7,7 @@ import { voiceActions, voiceCommands } from '../../utils';
 import './search.css';
 
 function Search(props) {
-  const {
-    degrees,
-    lang,
-    place,
-    textLabels,
-    weather,
-    handleSearch,
-    handleSpeak,
-  } = props;
+  const { degrees, lang, place, textLabels, handleSearch, handleSpeak } = props;
 
   const notyf = useContext(NotyfContext);
 
@@ -127,7 +119,7 @@ function Search(props) {
 
     setRecognition(newRecognition);
   }
-  useEffect(initRecognition, [degrees, lang, place, weather, textLabels]);
+  useEffect(initRecognition, [degrees, lang, place, textLabels]);
 
   return (
     <form className="search-city" onSubmit={onSubmit}>

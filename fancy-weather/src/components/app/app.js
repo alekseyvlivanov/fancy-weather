@@ -383,7 +383,6 @@ function App() {
             lang={lang}
             place={place}
             textLabels={textLabels}
-            weather={weather}
             handleSearch={handleSearch}
             handleSpeak={handleSpeak}
           />
