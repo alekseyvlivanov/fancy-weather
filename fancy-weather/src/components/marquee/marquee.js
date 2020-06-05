@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { toFahrenheit, CONSTANTS } from '../../utils';
+import { CONSTANTS, toFahrenheit } from '../../utils';
 
 import './marquee.css';
 

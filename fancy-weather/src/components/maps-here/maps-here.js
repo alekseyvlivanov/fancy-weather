@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import './maps-here.css';
 
@@ -7,7 +7,7 @@ function MapsHere(props) {
 
   const mapRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!mapRef.current) return;
 
     const H = window.H;

@@ -331,14 +331,6 @@ function App() {
             },
           };
 
-          setPlaceFull(newPlace);
-          setPlace(newPlace[lang]);
-
-          setWeatherFull(newWeather);
-          setWeather(newWeather[lang]);
-
-          setTimezone(enCurrentWeather.data[0].timezone);
-
           const season = getSeason(dayTime, coords);
           const partOfDay = getPartOfDay(dayTime);
 
@@ -346,7 +338,16 @@ function App() {
           const newPhotos = await pixabayService.getPhotos(
             `${season} ${partOfDay}`,
           );
+
           setPhotos(newPhotos);
+
+          setPlaceFull(newPlace);
+          setPlace(newPlace[lang]);
+
+          setWeatherFull(newWeather);
+          setWeather(newWeather[lang]);
+
+          setTimezone(enCurrentWeather.data[0].timezone);
         }
       } else {
         notyf.error(
@@ -362,8 +363,6 @@ function App() {
 
   function initApp() {
     async function getInitialGeo() {
-      consoleInfo();
-
       const ip = await cloudflareService.getIP();
       if (!ip) {
         notyf.error("Couldn't determine your IP - using default Geo data");
@@ -379,6 +378,9 @@ function App() {
 
       return geoByIP;
     }
+
+    consoleInfo();
+
     getInitialGeo().then((geoByIP) => {
       setCoords(
         geoByIP
