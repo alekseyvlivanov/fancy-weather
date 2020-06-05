@@ -18,10 +18,12 @@ function Maps(props) {
       />
       <div className="maps-coordinates">
         <p>
-          {textLabels.lat}: {coords.lat}
+          {textLabels.lat}: {Math.trunc(coords.lat)}°
+          {coords.lat.toFixed(2).slice(-2)}'
         </p>
         <p>
-          {textLabels.lon}: {coords.lon}
+          {textLabels.lon}: {Math.trunc(coords.lon)}°
+          {coords.lon.toFixed(2).slice(-2)}'
         </p>
       </div>
     </div>
