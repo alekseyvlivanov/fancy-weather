@@ -4,6 +4,8 @@
 | ---------------- | ------------- | ------------- |
 | 31.05.2020 23:59 | fancy-weather | fancy-weather |
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/79bb1a2b-a972-4375-8ce9-8c2490531847/deploy-status)](https://app.netlify.com/sites/fancy-weather-chessiah/deploys)
+
 You can see this project in action:
 
 - Netlify - <https://fancy-weather.chessiah.com>
