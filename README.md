@@ -1,8 +1,12 @@
+# Fancy Weather
+
 | Deadline         | Folder name   | Branch name   |
 | ---------------- | ------------- | ------------- |
 | 31.05.2020 23:59 | fancy-weather | fancy-weather |
 
-# fancy-weather
+You can see this project in action:
+
+- Netlify - <https://fancy-weather.chessiah.com>
 
 ## Задание
 

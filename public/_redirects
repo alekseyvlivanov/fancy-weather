@@ -1,0 +1,6 @@
+# Netlify redirects
+
+https://fancy-weather-chessiah.netlify.app/* https://fancy-weather.chessiah.com/:splat 301!
+http://fancy-weather-chessiah.netlify.app/* https://fancy-weather.chessiah.com/:splat 301!
+
+http://fancy-weather.chessiah.com/* https://fancy-weather.chessiah.com/:splat 301!
