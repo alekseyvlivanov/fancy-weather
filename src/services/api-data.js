@@ -15,6 +15,10 @@ export default {
     apiKeyREST: 'cRw4d8lz-YhlxoryOCZlmiBcjvEHZNJo6tYWbCHjmEw',
   },
 
+  MultiTranslate: {
+    apiBase: 'https://multi-translate-public-api.rekon.uk',
+  },
+
   Pixabay: {
     apiBase: 'https://pixabay.com/api',
     apiKey: '16757848-639581fd772a52384b00e16f2',
@@ -26,11 +30,5 @@ export default {
       'dd1212eb8d404c29b988e294b30bbbf6',
       '5c12df4d5bcb4f3bb69c89d4bed54ea9',
     ],
-  },
-
-  Yandex: {
-    apiBase: 'https://translate.yandex.net/api/v1.5/tr.json',
-    apiKey:
-      'trnsl.1.1.20200509T161541Z.bad99bebb7e002e7.dea9956eed43cfc34a8158a12fab46611314a3ac',
   },
 };

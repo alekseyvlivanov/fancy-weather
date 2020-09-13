@@ -1,16 +1,16 @@
-import { yandexService } from './index';
+import { multiTranslateService } from './index';
 
-describe('Yandex', () => {
+describe('MultiTranslate', () => {
   it('should return correct translation', async () => {
-    expect(yandexService.translate).toBeDefined();
+    expect(multiTranslateService.translate).toBeDefined();
 
     const txtEn = 'Vladivostok';
     const txtRu = 'Владивосток';
     const txtBe = 'Уладзівасток';
 
-    const testBe = await yandexService.translate([txtRu], 'ru-be');
-    const testEn = await yandexService.translate([txtBe], 'be-en');
-    const testRu = await yandexService.translate([txtEn], 'en-ru');
+    const testBe = await multiTranslateService.translate([txtRu], 'be', 'ru');
+    const testEn = await multiTranslateService.translate([txtBe], 'en', 'be');
+    const testRu = await multiTranslateService.translate([txtEn], 'ru', 'en');
 
     expect(testBe).not.toBeNull();
     expect(testBe[0]).toEqual(txtBe);

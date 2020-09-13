@@ -30,9 +30,9 @@ import {
   cloudflareService,
   geoIPLookupService,
   hereService,
+  multiTranslateService,
   pixabayService,
   weatherbitService,
-  yandexService,
 } from '../../services';
 
 function App() {
@@ -202,12 +202,13 @@ function App() {
         },
       };
 
-      const placeInBelorussian = await yandexService.translate(
+      const placeInBelorussian = await multiTranslateService.translate(
         [
           placeInRussian.items[0].address.city,
           placeInRussian.items[0].address.countryName,
         ],
         CONSTANTS.langs.be,
+        CONSTANTS.langs.ru,
       );
 
       place.be = placeInBelorussian
