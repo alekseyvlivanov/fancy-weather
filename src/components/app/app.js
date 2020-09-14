@@ -363,7 +363,7 @@ function App() {
   useEffect(updateApp, [coords]);
 
   function initApp() {
-    async function getInitialGeo() {
+    async function getGeoByIP() {
       const ip = await cloudflareService.getIP();
       if (!ip) {
         notyf.error("Couldn't determine your IP - using default Geo data");
@@ -380,16 +380,23 @@ function App() {
       return geoByIP;
     }
 
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      },
+      () => {
+        getGeoByIP().then((geo) => {
+          setCoords(
+            geo ? { lat: geo.latitude, lon: geo.longitude } : initValues.coords,
+          );
+        });
+      },
+    );
+
     consoleInfo();
-
-    getInitialGeo().then((geoByIP) => {
-      setCoords(
-        geoByIP
-          ? { lat: geoByIP.latitude, lon: geoByIP.longitude }
-          : initValues.coords,
-      );
-    });
-
     notyf.success("Don't forget to check the Chrome DevTools console");
   }
   useEffect(initApp, []);
