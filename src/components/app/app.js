@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/be';
+import Loader from 'react-loader-spinner';
+
 import 'notyf/notyf.min.css';
 import NotyfContext from '../../notyf-context';
 
@@ -15,7 +17,6 @@ import {
   CONSTANTS,
   initValues,
   voiceActions,
-  consoleInfo,
   toFahrenheit,
   getSeason,
   getPartOfDay,
@@ -335,7 +336,6 @@ function App() {
           const season = getSeason(dayTime, coords);
           const partOfDay = getPartOfDay(dayTime);
 
-          window.console.log(`Pixabay search: '${season} ${partOfDay}'`);
           const newPhotos = await pixabayService.getPhotos(
             `${season} ${partOfDay}`,
           );
@@ -395,9 +395,6 @@ function App() {
         });
       },
     );
-
-    consoleInfo();
-    notyf.success("Don't forget to check the Chrome DevTools console");
   }
   useEffect(initApp, []);
 
@@ -455,7 +452,13 @@ function App() {
         <img className="pixabay" src={pixabay} alt="pixabay" />
       </a>
     </>
-  ) : null;
+  ) : (
+    <div className="app">
+      <div className="app-main">
+        <Loader type="Grid" color="white" height={100} width={100} />
+      </div>
+    </div>
+  );
 }
 
 export default App;
