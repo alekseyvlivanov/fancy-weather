@@ -1,7 +1,7 @@
 export default class MultiTranslateService {
   constructor(data) {
     this.apiBase = data.apiBase;
-    this.corsProxy = 'https://cors-anywhere.herokuapp.com/';
+    this.corsProxy = 'https://api.allorigins.win/get?url=';
   }
 
   async translate(arr, to, from) {
