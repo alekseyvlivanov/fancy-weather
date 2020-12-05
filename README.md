@@ -4,9 +4,9 @@
 
 This is a React SPA for weather forecast.
 
-#### DEMO - https://fancy-weather.chessiah.com
+#### DEMO - https://fancy-weather.aleksey-vl-ivanov.com
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/79bb1a2b-a972-4375-8ce9-8c2490531847/deploy-status)](https://app.netlify.com/sites/fancy-weather-chessiah/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e7e9999d-084a-490e-971d-7fbad246ea3f/deploy-status)](https://app.netlify.com/sites/fancy-weather-aleksey-vl-ivanov/deploys)
 
 <div align="center">
 <img src="https://user-images.githubusercontent.com/14129152/83372284-39860700-a408-11ea-9ee0-448e4c415a9b.png" width="640px">
