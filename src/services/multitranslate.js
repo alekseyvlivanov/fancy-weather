@@ -10,7 +10,7 @@ export default class MultiTranslateService {
         encodeURI(
           `${this.apiBase}/translate?source_text=${text}&to_language=${to}&from_language=${from}`,
         ),
-        { mode: 'cors' },
+        { mode: 'no-cors' },
       );
 
       if (!res.ok) {
