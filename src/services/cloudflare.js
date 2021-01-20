@@ -5,7 +5,7 @@ export default class CloudflareService {
   }
 
   async getIP() {
-    const res = await fetch(this.apiBase);
+    const res = await fetch(this.apiBase, { mode: 'cors' });
 
     if (!res.ok) {
       throw new Error(`Could not detect IP. Received ${res.status}`);

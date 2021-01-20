@@ -1,7 +1,6 @@
 export default class MultiTranslateService {
   constructor(data) {
     this.apiBase = data.apiBase;
-    this.corsProxy = 'https://api.allorigins.win/get?url=';
   }
 
   async translate(arr, to, from) {
@@ -9,8 +8,9 @@ export default class MultiTranslateService {
       const text = arr.join(', ');
       const res = await fetch(
         encodeURI(
-          `${this.corsProxy}${this.apiBase}/translate?source_text=${text}&to_language=${to}&from_language=${from}`,
+          `${this.apiBase}/translate?source_text=${text}&to_language=${to}&from_language=${from}`,
         ),
+        { mode: 'cors' },
       );
 
       if (!res.ok) {

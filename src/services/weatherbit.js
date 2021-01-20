@@ -11,6 +11,7 @@ export default class WeatherbitService {
       `${this.apiBase}/current?key=${
         this.apiKeys[Math.round(Math.random())]
       }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=M`,
+      { mode: 'cors' },
     );
 
     if (!res.ok) {
@@ -33,6 +34,7 @@ export default class WeatherbitService {
       `${this.apiBase}/forecast/daily?key=${
         this.apiKeys[Math.round(Math.random())]
       }&lat=${coords.lat}&lon=${coords.lon}&lang=${lang}&units=M`,
+      { mode: 'cors' },
     );
 
     if (!res.ok) {

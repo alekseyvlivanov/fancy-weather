@@ -9,6 +9,7 @@ export default class PixabayService {
       `${this.apiBase}/?key=${this.apiKey}&q=${encodeURIComponent(
         text,
       )}&image_type=photo&category=backgrounds`,
+      { mode: 'cors' },
     );
 
     if (!res.ok) {

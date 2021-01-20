@@ -4,7 +4,7 @@ export default class GeoIPLookupService {
   }
 
   async getGeoByIP(ip) {
-    const res = await fetch(`${this.apiBase}/${ip}`);
+    const res = await fetch(`${this.apiBase}/${ip}`, { mode: 'cors' });
 
     if (!res.ok) {
       throw new Error(`Could not get Geo for ${ip}. Received ${res.status}`);
