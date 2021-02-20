@@ -1,0 +1,39 @@
+@keyframes scroll {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+.marquee-block {
+  display: block;
+  height: 3.6rem;
+  width: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(43, 43, 66, 0.4),
+    rgba(43, 43, 66, 0.8) 50%,
+    rgba(43, 43, 66, 0.4)
+  );
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee {
+  display: inline-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 100%;
+  animation: scroll 200s infinite linear;
+}
+
+.marquee-item {
+  display: inline-block;
+  padding: 0 3rem;
+}
+
+.marquee-item span {
+  padding-right: 1rem;
+}

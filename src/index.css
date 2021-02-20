@@ -1,0 +1,49 @@
+@keyframes smooth {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-attachment: fixed;
+  background-color: #11112e;
+  background-image: linear-gradient(
+      180deg,
+      rgba(8, 15, 26, 0.59) 0%,
+      rgba(17, 17, 46, 0.46) 100%
+    ),
+    url(./assets/bg-default.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: smooth 2s ease-in-out;
+
+  color: #fff;
+
+  font-family: 'Montserrat', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.7rem;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

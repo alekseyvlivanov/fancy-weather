@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[[redirects]]
+  from = "https://fancy-weather-aleksey-vl-ivanov.netlify.app/*"
+  to = "https://fancy-weather.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://fancy-weather-aleksey-vl-ivanov.netlify.app/*"
+  to = "https://fancy-weather.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://fancy-weather.aleksey-vl-ivanov.com/*"
+  to = "https://fancy-weather.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true

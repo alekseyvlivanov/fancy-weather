@@ -1,0 +1,191 @@
+.weather-block {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.city-country {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 4.4rem;
+  font-weight: bold;
+  line-height: 5.4rem;
+  text-transform: uppercase;
+}
+
+.date-time {
+  font-family: monospace;
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 4rem;
+}
+
+.city {
+  margin-right: 1rem;
+}
+
+.city::after {
+  content: ',';
+}
+
+.date {
+  margin-right: 1rem;
+}
+
+.weather-today {
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  margin-top: 2rem;
+}
+
+.today-left {
+  display: flex;
+  margin-right: 3rem;
+}
+
+.left-temp {
+  font-size: 18rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.left-degrees {
+  font-size: 6rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.today-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.today-icon {
+  height: 120px;
+  width: 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: scale(2.2);
+}
+
+.today-summary {
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1.8rem;
+}
+
+.ms {
+  text-transform: lowercase;
+}
+
+.weather-days {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  margin-top: 2rem;
+}
+
+.weather-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 375px;
+}
+
+.weather-day h5 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.day-summary {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.day-summary span {
+  font-size: 5rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.day-icon {
+  height: 54px;
+  width: 54px;
+}
+
+@media (max-width: 1024px) {
+  .weather-title {
+    text-align: center;
+  }
+
+  .city-country {
+    flex-direction: column;
+    font-size: 3.2rem;
+    line-height: 3.6rem;
+  }
+
+  .city {
+    margin-right: 0;
+  }
+
+  .city::after {
+    content: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .weather-block {
+    width: unset;
+  }
+
+  .weather-today {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .today-left {
+    margin: 0;
+    text-align: center;
+  }
+
+  .left-temp {
+    font-size: 10rem;
+  }
+
+  .left-degrees {
+    font-size: 5rem;
+  }
+
+  .today-icon {
+    align-self: center;
+  }
+
+  .today-summary {
+    font-size: 2rem;
+    line-height: 2.4rem;
+    margin-top: 1rem;
+  }
+
+  .weather-days {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .weather-day {
+    width: unset;
+    margin-top: 1rem;
+  }
+
+  .weather-day h5 {
+    font-size: 2rem;
+  }
+
+  .maps-block {
+    margin-top: 2rem;
+  }
+}
